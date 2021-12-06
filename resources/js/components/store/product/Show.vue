@@ -16,7 +16,7 @@
             </div>
             <div class="col-12">
                 <div class="table-responsive">
-                    <table class="table table-success table-striped">
+                    <table class="table table-light table-striped">
                         <thead class="table-bordered">
                             <tr>
                                 <th>Id</th>
@@ -25,7 +25,7 @@
                                 <th>Descripción</th>
                                 <th>Cantidad</th>
                                 <th>Estado</th>
-                                <th>Id. Categoría</th>
+                                <th>Categoría</th>
                                 <th>Imágen</th>
                                 <th>Opciones</th>
                             </tr>
@@ -38,9 +38,13 @@
                                 <td>{{ product.description }}</td>
                                 <td>{{ product.stock }}</td>
                                 <td>{{ product.status }}</td>
-                                <td>{{ product.category_id }}</td>
+                                <td>{{ product.category }}</td>
                                 <td>
-                                    <img src="" alt="">
+                                    <div class="text-center">
+                                        <a v-bind:href="'img/products/' + product.img_path" data-lightbox="image-1" >
+                                            <img v-bind:src="'img/products/' + product.img_path" v-bind:alt="product.name" width="100rem">    
+                                        </a>
+                                    </div>
                                 </td>
                                 <td class="text-center">
                                     <router-link :to='{name:"editProduct", params:{id:product.id}}' class="btn btn-warning">

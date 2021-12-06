@@ -6,7 +6,7 @@ export const ROUTES = [
     {
         name: 'home',
         path: '/',
-        component: ()=> import('./components/store/category/Show.vue')
+        component: ()=> import('./components/store/product/Show.vue'),
     },
     {
         name: 'showCategory',

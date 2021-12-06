@@ -77,11 +77,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     };
   },
-  mounted: function mounted() {
-    this.showCategory();
+  created: function created() {
+    this.showData();
   },
   methods: {
-    showCategory: function showCategory() {
+    showData: function showData() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -90,14 +90,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.axios.get("/api/category/".concat(_this.$route.params.id)).then(function (response) {
-                  var _response$data = response.data,
-                      name = _response$data.name,
-                      description = _response$data.description,
-                      status = _response$data.status;
-                  _this.category.name = name, _this.category.description = description, _this.category.status = status;
-                })["catch"](function (error) {
-                  console.log(error);
+                return _this.axios.get("/api/category/".concat(_this.$route.params.id, "/edit")).then(function (response) {
+                  console.log(_this.$route.params.id);
+                  _this.category = response.data;
                 });
 
               case 2:
@@ -1021,7 +1016,7 @@ var render = function () {
                       },
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "text", value: "", autofocus: "" },
+                    attrs: { type: "text", autofocus: "" },
                     domProps: { value: _vm.category.name },
                     on: {
                       input: function ($event) {
@@ -1048,6 +1043,7 @@ var render = function () {
                           expression: "category.status",
                         },
                       ],
+                      staticClass: "form-control",
                       attrs: { name: "", id: "" },
                       on: {
                         change: function ($event) {
@@ -1086,7 +1082,7 @@ var render = function () {
                     _vm._v("Descripción"),
                   ]),
                   _vm._v(" "),
-                  _c("textarea", {
+                  _c("input", {
                     directives: [
                       {
                         name: "model",

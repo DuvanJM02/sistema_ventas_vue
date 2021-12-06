@@ -72,6 +72,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 // import { defineComponent } from '@vue/composition-api'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "products",
@@ -266,7 +270,7 @@ var render = function () {
       _vm._v(" "),
       _c("div", { staticClass: "col-12" }, [
         _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table table-success table-striped" }, [
+          _c("table", { staticClass: "table table-light table-striped" }, [
             _vm._m(1),
             _vm._v(" "),
             _c(
@@ -285,9 +289,30 @@ var render = function () {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(product.status))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(product.category_id))]),
+                  _c("td", [_vm._v(_vm._s(product.category))]),
                   _vm._v(" "),
-                  _vm._m(2, true),
+                  _c("td", [
+                    _c("div", { staticClass: "text-center" }, [
+                      _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: "img/products/" + product.img_path,
+                            "data-lightbox": "image-1",
+                          },
+                        },
+                        [
+                          _c("img", {
+                            attrs: {
+                              src: "img/products/" + product.img_path,
+                              alt: product.name,
+                              width: "100rem",
+                            },
+                          }),
+                        ]
+                      ),
+                    ]),
+                  ]),
                   _vm._v(" "),
                   _c(
                     "td",
@@ -362,19 +387,13 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Estado")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Id. Categoría")]),
+        _c("th", [_vm._v("Categoría")]),
         _vm._v(" "),
         _c("th", [_vm._v("Imágen")]),
         _vm._v(" "),
         _c("th", [_vm._v("Opciones")]),
       ]),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_c("img", { attrs: { src: "", alt: "" } })])
   },
 ]
 render._withStripped = true

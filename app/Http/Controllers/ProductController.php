@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductFormRequest;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,14 @@ class ProductController extends Controller
     {
         if($request){
             $query = trim($request->get('search'));
-            $products = Product::where('name', 'like', '%' . $query . '%')->where('status', '1')->get();
+            $products = DB::table('products as p')
+            ->join('categories as c', 'p.category_id', 'c.id')
+            ->select('p.id', 'p.code', 'p.name', 'p.description', 'p.stock', 'p.status', 'p.img_path', 'c.name as category')
+            ->where('p.name', 'like', '%' . $query . '%')
+            ->orWhere('p.code', 'like', '%' . $query . '%')
+            ->where('p.status', '1')
+            ->orderBy('p.id', 'desc')
+            ->get();
 
             return response()->json($products);
 
@@ -33,7 +41,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $category = Category::where('status', '1')->get();
+
+        return response()->json($category);
     }
 
     /**

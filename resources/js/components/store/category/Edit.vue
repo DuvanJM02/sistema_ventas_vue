@@ -10,18 +10,18 @@
                         <form @submit.prevent="edit">
                             <div class="form-group">
                                 <label for="name">Nombre</label>
-                                <input class="form-control" type="text" v-model="category.name" value="" autofocus>
+                                <input class="form-control" type="text" v-model="category.name" autofocus>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="status">Estado</label>
-                                <select name="" id="" v-model="category.status">
+                                <select class="form-control" name="" id="" v-model="category.status">
                                     <option value="1">Activo</option>
                                     <option value="0">Inactivo</option>
                                 </select>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="description">Descripción</label>
-                                <textarea class="form-control" v-model="category.description"></textarea>
+                                <input class="form-control" v-model="category.description">
                             </div>
                             <div class="form-group mt-3">
                                 <button type="submit" class="btn btn-success">Guardar</button>
@@ -46,20 +46,15 @@
                 }
             }
         },
-        mounted(){
-            this.showCategory()
+        created(){
+            this.showData()
         },
         methods:{
-            async showCategory(){
-                await this.axios.get(`/api/category/${this.$route.params.id}`)
+            async showData(){
+                await this.axios.get(`/api/category/${this.$route.params.id}/edit`)
                 .then(response=>{
-                    const {name, description, status} = response.data
-                    this.category.name = name,
-                    this.category.description = description,
-                    this.category.status = status
-                })
-                .catch(error=>{
-                    console.log(error)
+                    console.log(this.$route.params.id)
+                    this.category = response.data
                 })
             },
             async edit(){
@@ -70,7 +65,7 @@
                 .catch(error=>{
                     console.log(error)
                 })
-            }
+            },
         } 
     }
 </script>

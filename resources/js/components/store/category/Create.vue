@@ -14,7 +14,7 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="description">Descripción</label>
-                                <textarea class="form-control" v-model="category.description"></textarea>
+                                <input class="form-control" v-model="category.description">
                             </div>
                             <div class="form-group mt-3">
                                 <button type="submit" class="btn btn-success">Guardar</button>
