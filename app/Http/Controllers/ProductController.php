@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Faker\Core\File;
+use Faker\Provider\File as ProviderFile;
 
 class ProductController extends Controller
 {
@@ -54,13 +56,29 @@ class ProductController extends Controller
      */
     public function store(ProductFormRequest $request)
     {
-        if ($request->imagen) {
-            $image = $request->file('imagen');
-            $request->imagen->move(public_path() . '/img/products/', $image->getClientOriginalName());
-            $request->imagen = $image->getClientOriginalName();
+
+        $product = new Product();
+
+        $product->code = $request->code;
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->stock = $request->stock;
+        $product->status = $request->status;
+        $product->category_id = $request->category_id;
+
+
+        if ($request->img_path) {
+            $image = $request->file('img_path');
+            // $namePhoto = time() . '.' . $image->getClientOriginalExtension();
+            $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
+            $request->img_path->move(public_path() . '/img/products/', $namePhoto);
+            $product->img_path = $namePhoto;
         }
 
-        $product = Product::create($request->post());
+        // dd($request->img_path);
+
+        $product->save();
+
         return response()->json(['product' => $product]);
     }
 
@@ -74,6 +92,7 @@ class ProductController extends Controller
     {
         return response()->json($category);
     }
+
 
     /**
      * Show the form for editing the specified resource.

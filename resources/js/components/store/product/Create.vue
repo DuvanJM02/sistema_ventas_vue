@@ -1,7 +1,7 @@
 <template>
-    <div class="container mt-5">
+    <div class="container my-5">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
                         <h4>Subir producto</h4>
@@ -33,12 +33,22 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="img_path">Imágen</label> 
-                                <input class="form-control" type="file" @change="onFileChange">
+                                <input class="form-control" type="file" @change="getImage" accept="image/*"> 
                             </div>
                             <div class="form-group mt-3">
                                 <button type="submit" class="btn btn-success">Guardar</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card" v-if="imagen">
+                    <div class="card-header">
+                        <h4>{{ product.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <img :src="imagen" alt="" width="100%">
                     </div>
                 </div>
             </div>
@@ -51,6 +61,7 @@
         name: "createProduct",
         data(){
             return{
+                imgThumb: null,
                 categories: [],
                 product:{
                     code: "",
@@ -68,6 +79,19 @@
             this.showCategory()
         },
         methods:{
+            getImage(e){
+                let file = e.target.files[0];
+                console.log(file)
+                this.product.img_path = file;
+                this.uploadImg(file);
+            },
+            uploadImg(file){
+                let reader = new FileReader()
+                reader.onload = (e) => {
+                    this.imgThumb = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            },
             async showCategory(){
                 await this.axios.get('/api/product/create')
                 .then(response=>{
@@ -79,20 +103,28 @@
                 })
             },
             async create(){
-                await this.axios.post('/api/product', this.product)
+                let formData = new FormData();
+                formData.append('code', this.product.code)
+                formData.append('name', this.product.name)
+                formData.append('description', this.product.description)
+                formData.append('stock', this.product.stock)
+                formData.append('status', this.product.status)
+                formData.append('category_id', this.product.category_id)
+                formData.append('img_path', this.product.img_path)
+                await this.axios.post('/api/product', formData)
                 .then(response=>{
+                    console.log(response.data)
                     this.$router.push({name:"showProduct"})
                 })
                 .catch(error=>{
                     
                 })
             },
-            onFileChange(e) {
-                var files = e.target.files || e.dataTransfer.files;
-                if (!files.length)
-                    return;
-                this.create(files[0]);
-            },
-        } 
+        },
+        computed:{
+            imagen(){
+                return this.imgThumb; 
+            }
+        }
     }
 </script>

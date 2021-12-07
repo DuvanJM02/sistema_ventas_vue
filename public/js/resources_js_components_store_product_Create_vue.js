@@ -78,10 +78,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "createProduct",
   data: function data() {
     return {
+      imgThumb: null,
       categories: [],
       product: {
         code: "",
@@ -99,8 +110,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.showCategory();
   },
   methods: {
-    showCategory: function showCategory() {
+    getImage: function getImage(e) {
+      var file = e.target.files[0];
+      console.log(file);
+      this.product.img_path = file;
+      this.uploadImg(file);
+    },
+    uploadImg: function uploadImg(file) {
       var _this = this;
+
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        _this.imgThumb = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    },
+    showCategory: function showCategory() {
+      var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -108,9 +136,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.axios.get('/api/product/create').then(function (response) {
+                return _this2.axios.get('/api/product/create').then(function (response) {
                   console.log(response.data);
-                  _this.categories = response.data;
+                  _this2.categories = response.data;
                 })["catch"](function (error) {
                   console.log(error);
                 });
@@ -124,32 +152,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     create: function create() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
-                return _this2.axios.post('/api/product', _this2.product).then(function (response) {
-                  _this2.$router.push({
+                formData = new FormData();
+                formData.append('code', _this3.product.code);
+                formData.append('name', _this3.product.name);
+                formData.append('description', _this3.product.description);
+                formData.append('stock', _this3.product.stock);
+                formData.append('status', _this3.product.status);
+                formData.append('category_id', _this3.product.category_id);
+                formData.append('img_path', _this3.product.img_path);
+                _context2.next = 10;
+                return _this3.axios.post('/api/product', formData).then(function (response) {
+                  console.log(response.data);
+
+                  _this3.$router.push({
                     name: "showProduct"
                   });
                 })["catch"](function (error) {});
 
-              case 2:
+              case 10:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
       }))();
-    },
-    onFileChange: function onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.create(files[0]);
+    }
+  },
+  computed: {
+    imagen: function imagen() {
+      return this.imgThumb;
     }
   }
 });
@@ -1008,9 +1047,9 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container mt-5" }, [
+  return _c("div", { staticClass: "container my-5" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-12" }, [
+      _c("div", { staticClass: "col-lg-8" }, [
         _c("div", { staticClass: "card" }, [
           _vm._m(0),
           _vm._v(" "),
@@ -1203,8 +1242,8 @@ var render = function () {
                   _vm._v(" "),
                   _c("input", {
                     staticClass: "form-control",
-                    attrs: { type: "file" },
-                    on: { change: _vm.onFileChange },
+                    attrs: { type: "file", accept: "image/*" },
+                    on: { change: _vm.getImage },
                   }),
                 ]),
                 _vm._v(" "),
@@ -1213,6 +1252,22 @@ var render = function () {
             ),
           ]),
         ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-4" }, [
+        _vm.imagen
+          ? _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _c("h4", [_vm._v(_vm._s(_vm.product.name))]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("img", {
+                  attrs: { src: _vm.imagen, alt: "", width: "100%" },
+                }),
+              ]),
+            ])
+          : _vm._e(),
       ]),
     ]),
   ])

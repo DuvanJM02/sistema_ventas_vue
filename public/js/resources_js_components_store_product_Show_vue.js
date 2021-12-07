@@ -307,6 +307,7 @@ var render = function () {
                               src: "img/products/" + product.img_path,
                               alt: product.name,
                               width: "100rem",
+                              height: "100rem",
                             },
                           }),
                         ]
