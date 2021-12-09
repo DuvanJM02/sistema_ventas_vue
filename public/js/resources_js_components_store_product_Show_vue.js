@@ -76,6 +76,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 // import { defineComponent } from '@vue/composition-api'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "products",
@@ -107,12 +114,23 @@ __webpack_require__.r(__webpack_exports__);
       clearTimeout(this.setTimeoutSearch);
       this.setTimeoutSearch = setTimeout(this.showProduct, 360);
     },
-    deleteCategory: function deleteCategory(id) {
+    deleteProduct: function deleteProduct(id) {
       var _this2 = this;
 
       if (confirm('¿Desea borrar el registro?')) {
         this.axios["delete"]("/api/product/".concat(id)).then(function (response) {
-          _this2.showProduct();
+          _this2.showProducts();
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    },
+    activateProduct: function activateProduct(id) {
+      var _this3 = this;
+
+      if (confirm('¿Desea activar el registro?')) {
+        this.axios.post("/api/product/activate/".concat(id)).then(function (response) {
+          _this3.showProducts();
         })["catch"](function (error) {
           console.log(error);
         });
@@ -333,19 +351,41 @@ var render = function () {
                         [_c("i", { staticClass: "fas fa-edit" })]
                       ),
                       _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-danger",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function ($event) {
-                              return _vm.deleteProduct(product.id)
-                            },
-                          },
-                        },
-                        [_c("i", { staticClass: "fas fa-trash-alt" })]
-                      ),
+                      product.status
+                        ? _c("div", { staticClass: "d-inline" }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "btn btn-danger",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.deleteProduct(product.id)
+                                  },
+                                },
+                              },
+                              [_c("i", { staticClass: "fas fa-eye-slash" })]
+                            ),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !product.status
+                        ? _c("div", { staticClass: "d-inline" }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "btn btn-success",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.activateProduct(product.id)
+                                  },
+                                },
+                              },
+                              [_c("i", { staticClass: "fas fa-eye" })]
+                            ),
+                          ])
+                        : _vm._e(),
                     ],
                     1
                   ),

@@ -116,36 +116,35 @@ class ProductController extends Controller
     public function update(ProductFormRequest $request, $id)
     {
 
-        if($request->hasFile('file')){
-            dd($request->img_path);
-            return "Si hay imagen";
-        }else{
-            dd($request->img_path);
-            return "No hay imagen";
-        }
+        // if($request->hasFile('file')){
+        //     dd($request->img_path);
+        //     return "Si hay imagen";
+        // }else{
+        //     dd($request->img_path);
+        //     return "No hay imagen";
+        // }
 
         // dd($request->img_path);
 
-        // $product = Product::findOrFail($id);
+        $product = Product::findOrFail($id);
 
-        // $product->code = $request->code;
-        // $product->name = $request->name;
-        // $product->description = $request->description;
-        // $product->stock = $request->stock;
-        // $product->status = $request->status;
-        // $product->category_id = $request->category_id;
-        // $product->img_path = $request->img_path;
+        $product->code = $request->code;
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->stock = $request->stock;
+        $product->status = $request->status;
+        $product->category_id = $request->category_id;
 
-        // if ($request->img_path != $product->img_path) {
-        //     $image = $request->file('img_path');
-        //     $namePhoto = time() . '-2' . $request->name . '.' . $image->getClientOriginalExtension();
-        //     $request->img_path->move(public_path() . '/img/products/', 'xd');
-        //     $product->img_path = $namePhoto;
-        // }
+        if ($request->img_path != $product->img_path) {
+            $image = $request->file('img_path');
+            $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
+            $request->img_path->move(public_path() . '/img/products/', $namePhoto);
+            $product->img_path = $namePhoto;
+        }
 
-        // $product->update();
+        $product->update();
 
-        // return response()->json(['product' => $product]);
+        return response()->json(['product' => $product]);
     }
 
     /**
@@ -156,13 +155,25 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $category = Product::findOrFail($id);
-        $category->status = '0';
+        $product = Product::findOrFail($id);
+        $product->status = '0';
 
-        $category->update();
+        $product->update();
 
         return response()->json([
-            'mensaje' => 'Categoría ELIMINADA'
+            'mensaje' => 'Producto ELIMINADO'
+        ]);
+    }
+
+    public function activate($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->status = '1';
+
+        $product->update();
+
+        return response()->json([
+            'mensaje' => 'Producto ACTIVADO'
         ]);
     }
 }

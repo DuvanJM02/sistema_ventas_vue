@@ -50,9 +50,16 @@
                                     <router-link :to='{name:"editProduct", params:{id:product.id}}' class="btn btn-warning">
                                         <i class="fas fa-edit"></i>
                                     </router-link>
-                                    <a class="btn btn-danger" type="button" @click="deleteProduct(product.id)">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
+                                    <div class="d-inline" v-if="product.status">
+                                        <a class="btn btn-danger" type="button" @click="deleteProduct(product.id)" >
+                                            <i class="fas fa-eye-slash"></i>
+                                        </a>
+                                    </div>
+                                    <div class="d-inline" v-if="!product.status">
+                                        <a class="btn btn-success" type="button" @click="activateProduct(product.id)" >
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -96,11 +103,22 @@ export default{
             clearTimeout(this.setTimeoutSearch)
             this.setTimeoutSearch = setTimeout(this.showProduct, 360)
         },
-        deleteCategory(id){
+        deleteProduct(id){
             if(confirm('¿Desea borrar el registro?')){
                 this.axios.delete(`/api/product/${id}`)
                 .then(response=>{
-                    this.showProduct()
+                    this.showProducts()
+                })
+                .catch(error=>{
+                    console.log(error) 
+                })
+            }
+        },
+        activateProduct(id){
+            if(confirm('¿Desea activar el registro?')){
+                this.axios.post(`/api/product/activate/${id}`)
+                .then(response=>{
+                    this.showProducts()
                 })
                 .catch(error=>{
                     console.log(error)

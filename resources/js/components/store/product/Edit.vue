@@ -60,7 +60,10 @@
                             <h4>Imágen nueva</h4>
                         </div>
                         <div class="card-body">
-                            <img :src="imagen" alt="" width="100%">
+                            <a :href="imagen" data-lightbox="image-1" >
+                                <img :src="imagen" alt="" width="100%">
+                            </a>
+                            
                         </div>
                     </div>
                 </div>
@@ -105,7 +108,7 @@ export default{
                     this.imgThumb = e.target.result;
                 }
                 reader.readAsDataURL(file);
-                // this.showData()
+                this.showData()
             },
             async showData(){
                 await this.axios.get(`/api/product/${this.$route.params.id}/edit`)
@@ -116,16 +119,22 @@ export default{
             },
             async edit(){
                 let formData = new FormData();
-                formData.append('file', this.file);
-
+                formData.append('code', this.product.code)
+                formData.append('name', this.product.name)
+                formData.append('description', this.product.description)
+                formData.append('stock', this.product.stock)
+                formData.append('status', this.product.status)
+                formData.append('category_id', this.product.category_id)
+                formData.append('img_path', this.file)
+                console.log(formData)
                 console.log(this.product)
-                await this.axios.put(`/api/product/${this.$route.params.id}`, this.product)
+                await this.axios.post('/api/product/' + this.$route.params.id, formData)
                 .then(response=>{
-                    this.product = response.data
+                    console.log(response.data)
                     this.$router.push({name:"showProduct"})
                 })
                 .catch(error=>{
-                    console.log(error)
+                     console.log(error)
                 })
             },
         },

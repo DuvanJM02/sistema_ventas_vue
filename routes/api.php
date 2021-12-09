@@ -23,4 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('category', CategoryController::class);
 
 Route::resource('product', ProductController::class);
-// Route::post('product/{product}', [ProductController::class, 'update'])->name('product.update');
+Route::post('product/{product}', [ProductController::class, 'update'])->name('product.update');
+Route::post('product/activate/{product}', [ProductController::class, 'activate'])->name('product.activate');

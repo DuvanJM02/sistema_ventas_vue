@@ -101,6 +101,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "editarProduct",
   data: function data() {
@@ -139,7 +142,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this.imgThumb = e.target.result;
       };
 
-      reader.readAsDataURL(file); // this.showData()
+      reader.readAsDataURL(file);
+      this.showData();
     },
     showData: function showData() {
       var _this2 = this;
@@ -173,11 +177,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 formData = new FormData();
-                formData.append('file', _this3.file);
+                formData.append('code', _this3.product.code);
+                formData.append('name', _this3.product.name);
+                formData.append('description', _this3.product.description);
+                formData.append('stock', _this3.product.stock);
+                formData.append('status', _this3.product.status);
+                formData.append('category_id', _this3.product.category_id);
+                formData.append('img_path', _this3.file);
+                console.log(formData);
                 console.log(_this3.product);
-                _context2.next = 5;
-                return _this3.axios.put("/api/product/".concat(_this3.$route.params.id), _this3.product).then(function (response) {
-                  _this3.product = response.data;
+                _context2.next = 12;
+                return _this3.axios.post('/api/product/' + _this3.$route.params.id, formData).then(function (response) {
+                  console.log(response.data);
 
                   _this3.$router.push({
                     name: "showProduct"
@@ -186,7 +197,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 5:
+              case 12:
               case "end":
                 return _context2.stop();
             }
@@ -1302,9 +1313,15 @@ var render = function () {
                 _vm._m(2),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
-                  _c("img", {
-                    attrs: { src: _vm.imagen, alt: "", width: "100%" },
-                  }),
+                  _c(
+                    "a",
+                    { attrs: { href: _vm.imagen, "data-lightbox": "image-1" } },
+                    [
+                      _c("img", {
+                        attrs: { src: _vm.imagen, alt: "", width: "100%" },
+                      }),
+                    ]
+                  ),
                 ]),
               ])
             : _vm._e(),
