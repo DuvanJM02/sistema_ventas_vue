@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
         if($request){
             $query = trim($request->get('search'));
-            $categories = Category::where('name', 'like', '%' . $query . '%')->where('status', '1')->orderBy('id', 'desc')->get();
+            $categories = Category::where('name', 'like', '%' . $query . '%')->orderBy('id', 'desc')->get();
 
             return response()->json($categories);
 

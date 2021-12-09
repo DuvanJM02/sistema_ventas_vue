@@ -28,12 +28,13 @@
                                 <label for="category">Categoría</label> 
                                 <select class="form-control w-100"  v-model="product.category_id">
                                     <option value="">Elige una opción</option>
-                                    <option v-for="category in categories" :key="category.id" v-bind:value="category.id">{{ category.name }}</option>
+
+                                    <option v-for="category in categories" :key="category.id" v-bind:value="category.id" :selected="product.category_id == category.id">{{ category.name }}</option>
                                 </select>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="img_path">Imágen</label> 
-                                <input class="form-control" type="file" @change="getImage" accept="image/*"> 
+                                <input class="form-control" type="file" v-on:change="getImage" accept="image/*"> 
                             </div>
                             <div class="form-group mt-3">
                                 <button type="submit" class="btn btn-success">Guardar</button>
@@ -46,10 +47,12 @@
                 <div class="card">
                     <div>
                         <div class="card-header">
-                            <h4>Imágen anterior {{ product.name }}</h4>
+                            <h4>Imágen anterior: {{ product.name }}</h4>
                         </div>
                         <div class="card-body">
-                            <img v-bind:src="'img/products/' + product.img_path" v-bind:alt="product.name" width="100%">
+                            <a v-bind:href="'/img/products/' + product.img_path" data-lightbox="image-1" >
+                                <img :src="'/img/products/' + product.img_path" v-bind:alt="product.name" width="100%">
+                            </a>
                         </div>
                     </div>
                     <div v-if="imagen">
@@ -71,6 +74,7 @@ export default{
         name: "editarProduct",
         data(){
             return{
+                file: '',
                 imgThumb: null,
                 categories: [],
                 product:{
@@ -90,10 +94,10 @@ export default{
         },
         methods:{
             getImage(e){
-                let file = e.target.files[0];
-                console.log(file)
-                this.product.img_path = file;
-                this.uploadImg(file);
+                this.file = e.target.files[0];
+                this.product.img_path = this.file;
+                this.uploadImg(this.file);
+                console.log(this.product.img_path)
             },
             uploadImg(file){
                 let reader = new FileReader()
@@ -101,23 +105,34 @@ export default{
                     this.imgThumb = e.target.result;
                 }
                 reader.readAsDataURL(file);
+                // this.showData()
             },
             async showData(){
                 await this.axios.get(`/api/product/${this.$route.params.id}/edit`)
                 .then(response=>{
-                    console.log(this.$route.params.id)
-                    this.category = response.data
+                    this.categories = response.data[1]
+                    this.product = response.data[0]
                 })
             },
             async edit(){
-                await this.axios.put(`/api/category/${this.$route.params.id}`, this.category)
+                let formData = new FormData();
+                formData.append('file', this.file);
+
+                console.log(this.product)
+                await this.axios.put(`/api/product/${this.$route.params.id}`, this.product)
                 .then(response=>{
-                    this.$router.push({name:"showCategory"})
+                    this.product = response.data
+                    this.$router.push({name:"showProduct"})
                 })
                 .catch(error=>{
                     console.log(error)
                 })
             },
-        } 
+        },
+        computed:{
+            imagen(){
+                return this.imgThumb; 
+            }
+        }
     }
 </script>

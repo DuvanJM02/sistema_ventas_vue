@@ -30,7 +30,7 @@
                                     <option value="">Elige una opción</option>
                                     <option v-for="category in categories" :key="category.id" v-bind:value="category.id">{{ category.name }}</option>
                                 </select>
-                            </div>
+                            </div> 
                             <div class="form-group mt-3">
                                 <label for="img_path">Imágen</label> 
                                 <input class="form-control" type="file" @change="getImage" accept="image/*"> 
@@ -86,7 +86,7 @@
                 this.uploadImg(file);
             },
             uploadImg(file){
-                let reader = new FileReader()
+                let reader = new FileReader() 
                 reader.onload = (e) => {
                     this.imgThumb = e.target.result;
                 }
@@ -111,13 +111,15 @@
                 formData.append('status', this.product.status)
                 formData.append('category_id', this.product.category_id)
                 formData.append('img_path', this.product.img_path)
+                console.log(formData)
+                console.log(this.product)
                 await this.axios.post('/api/product', formData)
                 .then(response=>{
                     console.log(response.data)
                     this.$router.push({name:"showProduct"})
                 })
                 .catch(error=>{
-                    
+                     console.log(error)
                 })
             },
         },

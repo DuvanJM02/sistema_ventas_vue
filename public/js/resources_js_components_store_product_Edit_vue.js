@@ -98,10 +98,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "editarProduct",
   data: function data() {
     return {
+      file: '',
       imgThumb: null,
       categories: [],
       product: {
@@ -121,10 +125,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     getImage: function getImage(e) {
-      var file = e.target.files[0];
-      console.log(file);
-      this.product.img_path = file;
-      this.uploadImg(file);
+      this.file = e.target.files[0];
+      this.product.img_path = this.file;
+      this.uploadImg(this.file);
+      console.log(this.product.img_path);
     },
     uploadImg: function uploadImg(file) {
       var _this = this;
@@ -135,7 +139,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this.imgThumb = e.target.result;
       };
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // this.showData()
     },
     showData: function showData() {
       var _this2 = this;
@@ -147,8 +151,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context.next = 2;
                 return _this2.axios.get("/api/product/".concat(_this2.$route.params.id, "/edit")).then(function (response) {
-                  console.log(_this2.$route.params.id);
-                  _this2.category = response.data;
+                  _this2.categories = response.data[1];
+                  _this2.product = response.data[0];
                 });
 
               case 2:
@@ -163,26 +167,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
-                return _this3.axios.put("/api/category/".concat(_this3.$route.params.id), _this3.category).then(function (response) {
+                formData = new FormData();
+                formData.append('file', _this3.file);
+                console.log(_this3.product);
+                _context2.next = 5;
+                return _this3.axios.put("/api/product/".concat(_this3.$route.params.id), _this3.product).then(function (response) {
+                  _this3.product = response.data;
+
                   _this3.$router.push({
-                    name: "showCategory"
+                    name: "showProduct"
                   });
                 })["catch"](function (error) {
                   console.log(error);
                 });
 
-              case 2:
+              case 5:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
       }))();
+    }
+  },
+  computed: {
+    imagen: function imagen() {
+      return this.imgThumb;
     }
   }
 });
@@ -1219,7 +1234,10 @@ var render = function () {
                           "option",
                           {
                             key: category.id,
-                            domProps: { value: category.id },
+                            domProps: {
+                              value: category.id,
+                              selected: _vm.product.category_id == category.id,
+                            },
                           },
                           [_vm._v(_vm._s(category.name))]
                         )
@@ -1252,17 +1270,30 @@ var render = function () {
         _c("div", { staticClass: "card" }, [
           _c("div", [
             _c("div", { staticClass: "card-header" }, [
-              _c("h4", [_vm._v("Imágen anterior " + _vm._s(_vm.product.name))]),
+              _c("h4", [
+                _vm._v("Imágen anterior: " + _vm._s(_vm.product.name)),
+              ]),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
-              _c("img", {
-                attrs: {
-                  src: "img/products/" + _vm.product.img_path,
-                  alt: _vm.product.name,
-                  width: "100%",
+              _c(
+                "a",
+                {
+                  attrs: {
+                    href: "/img/products/" + _vm.product.img_path,
+                    "data-lightbox": "image-1",
+                  },
                 },
-              }),
+                [
+                  _c("img", {
+                    attrs: {
+                      src: "/img/products/" + _vm.product.img_path,
+                      alt: _vm.product.name,
+                      width: "100%",
+                    },
+                  }),
+                ]
+              ),
             ]),
           ]),
           _vm._v(" "),

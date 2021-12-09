@@ -27,9 +27,10 @@ class ProductFormRequest extends FormRequest
             'code' => 'required', 
             'name' => 'required', 
             'description' => 'required', 
-            'stock', 'status' => 'required', 
-            'img_path' => 'required', 
-            'category_id' => 'required'
+            'stock' => 'required',
+            'status' => 'required', 
+            'category_id' => 'required',
+            'img_path' => ''
         ];
     }
 }

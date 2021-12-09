@@ -168,16 +168,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 formData.append('status', _this3.product.status);
                 formData.append('category_id', _this3.product.category_id);
                 formData.append('img_path', _this3.product.img_path);
-                _context2.next = 10;
+                console.log(formData);
+                console.log(_this3.product);
+                _context2.next = 12;
                 return _this3.axios.post('/api/product', formData).then(function (response) {
                   console.log(response.data);
 
                   _this3.$router.push({
                     name: "showProduct"
                   });
-                })["catch"](function (error) {});
+                })["catch"](function (error) {
+                  console.log(error);
+                });
 
-              case 10:
+              case 12:
               case "end":
                 return _context2.stop();
             }

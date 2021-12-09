@@ -41,8 +41,8 @@
                                 <td>{{ product.category }}</td>
                                 <td>
                                     <div class="text-center">
-                                        <a v-bind:href="'img/products/' + product.img_path" data-lightbox="image-1" >
-                                            <img v-bind:src="'img/products/' + product.img_path" v-bind:alt="product.name" width="100rem" height="100rem">    
+                                        <a :href="'img/products/' + product.img_path" data-lightbox="image-1" >
+                                            <img :src="'img/products/' + product.img_path" v-bind:alt="product.name" width="100rem" height="100rem">    
                                         </a>
                                     </div>
                                 </td>

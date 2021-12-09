@@ -74,7 +74,7 @@ class ProductController extends Controller
             $request->img_path->move(public_path() . '/img/products/', $namePhoto);
             $product->img_path = $namePhoto;
         }
-
+ 
         // dd($request->img_path);
 
         $product->save();
@@ -100,16 +100,52 @@ class ProductController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $category)
+    public function edit($id)
     {
-        //
+        return response()->json([
+            Product::findOrFail($id), 
+            Category::all()->where('status', '1')
+        ]);
     }
 
-    public function update(ProductFormRequest $request, Product $category)
-    {
-        $category->fill($request->post())->save();
+    // public function showCategories(){
+    //     $categories = Category::all()->where('status', '1');
+    //     return $categories;
+    // }
 
-        return response()->json(['category' => $category]);
+    public function update(ProductFormRequest $request, $id)
+    {
+
+        if($request->hasFile('file')){
+            dd($request->img_path);
+            return "Si hay imagen";
+        }else{
+            dd($request->img_path);
+            return "No hay imagen";
+        }
+
+        // dd($request->img_path);
+
+        // $product = Product::findOrFail($id);
+
+        // $product->code = $request->code;
+        // $product->name = $request->name;
+        // $product->description = $request->description;
+        // $product->stock = $request->stock;
+        // $product->status = $request->status;
+        // $product->category_id = $request->category_id;
+        // $product->img_path = $request->img_path;
+
+        // if ($request->img_path != $product->img_path) {
+        //     $image = $request->file('img_path');
+        //     $namePhoto = time() . '-2' . $request->name . '.' . $image->getClientOriginalExtension();
+        //     $request->img_path->move(public_path() . '/img/products/', 'xd');
+        //     $product->img_path = $namePhoto;
+        // }
+
+        // $product->update();
+
+        // return response()->json(['product' => $product]);
     }
 
     /**
