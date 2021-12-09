@@ -134,7 +134,7 @@ export default{
                     this.$router.push({name:"showProduct"})
                 })
                 .catch(error=>{
-                     console.log(error)
+                     console.log(response)
                 })
             },
         },

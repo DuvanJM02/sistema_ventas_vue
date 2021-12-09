@@ -194,7 +194,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     name: "showProduct"
                   });
                 })["catch"](function (error) {
-                  console.log(error);
+                  console.log(response);
                 });
 
               case 12:

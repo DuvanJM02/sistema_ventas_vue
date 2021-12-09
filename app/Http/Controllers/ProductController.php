@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductFormRequest;
 use App\Models\Category;
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Faker\Core\File;
+// use Faker\Core\File;
+use Illuminate\Support\Facades\File; 
 use Faker\Provider\File as ProviderFile;
 
 class ProductController extends Controller
@@ -134,15 +136,31 @@ class ProductController extends Controller
         $product->stock = $request->stock;
         $product->status = $request->status;
         $product->category_id = $request->category_id;
+        $old_img = $product->img_path;
 
-        if ($request->img_path != $product->img_path) {
-            $image = $request->file('img_path');
-            $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
-            $request->img_path->move(public_path() . '/img/products/', $namePhoto);
-            $product->img_path = $namePhoto;
+        try{
+            if ($request->img_path != $product->img_path) {
+                // unlink(public_path('/img/products/' . $product->photo_path));
+
+                $img_path = public_path('img/products/'.$product->img_path);
+
+                // return $img_path;
+                if (File::exists($img_path)) {
+                    //File::delete($img_path);
+                    unlink($img_path);
+                }
+
+                $image = $request->file('img_path');
+                $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
+                $request->img_path->move(public_path() . '/img/products/', $namePhoto);
+                $product->img_path = $namePhoto;
+                $product->update();
+            }
+        }catch(Exception $e){
+            $product->img_path = $old_img;
+            $product->update();
+            return response()->json(['e' => $e]);
         }
-
-        $product->update();
 
         return response()->json(['product' => $product]);
     }
