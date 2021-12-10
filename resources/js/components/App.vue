@@ -36,14 +36,28 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-dolly-flatbed"></i> Compras
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <router-link exact-active-class="active" to="/product" class="dropdown-item" aria-current="page">
+                                        <i class="fas fa-dolly-flatbed"></i> Ingreso
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link exact-active-class="active" to="/supplier" class="dropdown-item" aria-current="page">
+                                        <i class="fas fa-user-plus"></i> Proveedor
+                                    </router-link>
+                                </li>
+                            </ul>
+                        </li>
                         <!-- <li class="nav-item">
                             <router-link exact-active-class="active" to="/category" class="nav-link" aria-current="page">
                                 Categorias
                             </router-link>
                         </li> -->
-                        <li class="nav-item">
-                            <a class="nav-link disabled">Disabled</a>
-                        </li>
                     </ul>
                     <!-- <form class="d-flex" @submit.prevent="search">
                         <input class="form-control me-2" type="search" v-model="search" placeholder="Search" aria-label="Search"/>

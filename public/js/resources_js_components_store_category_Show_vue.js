@@ -86,7 +86,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this.categories = response.data;
       })["catch"](function (error) {
-        _this.categories = [];
+        console.log(error);
       });
     },
     searchItem: function searchItem() {

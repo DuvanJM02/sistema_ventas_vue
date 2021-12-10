@@ -96,12 +96,12 @@ export default{
                 this.products = response.data
             })
             .catch(error=>{
-                this.products = []
+                console.log(error)
             })
         },
         searchItem(){
             clearTimeout(this.setTimeoutSearch)
-            this.setTimeoutSearch = setTimeout(this.showProduct, 360)
+            this.setTimeoutSearch = setTimeout(this.showProducts, 360)
         },
         deleteProduct(id){
             if(confirm('¿Desea borrar el registro?')){
@@ -112,7 +112,7 @@ export default{
                 .catch(error=>{
                     console.log(error) 
                 })
-            }
+            } 
         },
         activateProduct(id){
             if(confirm('¿Desea activar el registro?')){

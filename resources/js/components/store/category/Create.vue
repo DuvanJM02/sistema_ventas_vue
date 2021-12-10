@@ -7,7 +7,7 @@
                         <h4>Crear categoría</h4>
                     </div>
                     <div class="card-body">
-                        <form @submit.prevent="create">
+                        <form @submit.prevent="create" method="POST">
                             <div class="form-group">
                                 <label for="name">Nombre</label>
                                 <input class="form-control" type="text" v-model="category.name" autofocus>

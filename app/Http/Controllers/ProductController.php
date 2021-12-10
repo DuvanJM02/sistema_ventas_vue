@@ -28,12 +28,11 @@ class ProductController extends Controller
             ->select('p.id', 'p.code', 'p.name', 'p.description', 'p.stock', 'p.status', 'p.img_path', 'c.name as category')
             ->where('p.name', 'like', '%' . $query . '%')
             ->orWhere('p.code', 'like', '%' . $query . '%')
-            ->where('p.status', '1')
             ->orderBy('p.id', 'desc')
             ->get();
 
             return response()->json($products);
-
+ 
             // return response()->json($query);
         }
     } 

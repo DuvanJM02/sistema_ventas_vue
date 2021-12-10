@@ -2183,6 +2183,24 @@ var ROUTES = [{
   component: function component() {
     return __webpack_require__.e(/*! import() */ "resources_js_components_store_product_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/store/product/Edit.vue */ "./resources/js/components/store/product/Edit.vue"));
   }
+}, {
+  name: 'showSupplier',
+  path: '/supplier',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_supplier_Show_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/supplier/Show.vue */ "./resources/js/components/shopping/supplier/Show.vue"));
+  }
+}, {
+  name: 'createSupplier',
+  path: '/supplier/create',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_supplier_Create_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/supplier/Create.vue */ "./resources/js/components/shopping/supplier/Create.vue"));
+  }
+}, {
+  name: 'editSupplier',
+  path: '/supplier/edit/:id',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_supplier_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/supplier/Edit.vue */ "./resources/js/components/shopping/supplier/Edit.vue"));
+  }
 }];
 
 /***/ }),
@@ -19771,7 +19789,66 @@ var render = function () {
                   ),
                 ]),
                 _vm._v(" "),
-                _vm._m(3),
+                _c("li", { staticClass: "nav-item dropdown" }, [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    {
+                      staticClass: "dropdown-menu",
+                      attrs: { "aria-labelledby": "navbarDropdown" },
+                    },
+                    [
+                      _c(
+                        "li",
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "dropdown-item",
+                              attrs: {
+                                "exact-active-class": "active",
+                                to: "/product",
+                                "aria-current": "page",
+                              },
+                            },
+                            [
+                              _c("i", { staticClass: "fas fa-dolly-flatbed" }),
+                              _vm._v(
+                                " Ingreso\n                                "
+                              ),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "li",
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "dropdown-item",
+                              attrs: {
+                                "exact-active-class": "active",
+                                to: "/supplier",
+                                "aria-current": "page",
+                              },
+                            },
+                            [
+                              _c("i", { staticClass: "fas fa-user-plus" }),
+                              _vm._v(
+                                " Proveedor\n                                "
+                              ),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                    ]
+                  ),
+                ]),
               ]),
             ]
           ),
@@ -19837,9 +19914,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "nav-item" }, [
-      _c("a", { staticClass: "nav-link disabled" }, [_vm._v("Disabled")]),
-    ])
+    return _c(
+      "a",
+      {
+        staticClass: "nav-link dropdown-toggle",
+        attrs: {
+          href: "#",
+          id: "navbarDropdown",
+          role: "button",
+          "data-bs-toggle": "dropdown",
+          "aria-expanded": "false",
+        },
+      },
+      [
+        _c("i", { staticClass: "fas fa-dolly-flatbed" }),
+        _vm._v(" Compras\n                        "),
+      ]
+    )
   },
 ]
 render._withStripped = true
@@ -35295,7 +35386,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_store_product_Show_vue":1,"resources_js_components_store_category_Show_vue":1,"resources_js_components_store_category_Create_vue":1,"resources_js_components_store_category_Edit_vue":1,"resources_js_components_store_product_Create_vue":1,"resources_js_components_store_product_Edit_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_store_product_Show_vue":1,"resources_js_components_store_category_Show_vue":1,"resources_js_components_store_category_Create_vue":1,"resources_js_components_store_category_Edit_vue":1,"resources_js_components_store_product_Create_vue":1,"resources_js_components_store_product_Edit_vue":1,"resources_js_components_shopping_supplier_Show_vue":1,"resources_js_components_shopping_supplier_Create_vue":1,"resources_js_components_shopping_supplier_Edit_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

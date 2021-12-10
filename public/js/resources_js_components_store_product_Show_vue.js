@@ -107,12 +107,12 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this.products = response.data;
       })["catch"](function (error) {
-        _this.products = [];
+        console.log(error);
       });
     },
     searchItem: function searchItem() {
       clearTimeout(this.setTimeoutSearch);
-      this.setTimeoutSearch = setTimeout(this.showProduct, 360);
+      this.setTimeoutSearch = setTimeout(this.showProducts, 360);
     },
     deleteProduct: function deleteProduct(id) {
       var _this2 = this;

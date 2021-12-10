@@ -12,3 +12,21 @@ a {
     padding-bottom: 0.5rem;
     padding-right: 10px;
 }
+
+.profile-photo{
+    border-radius: 50%!important;
+    box-sizing: border-box;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.dropdown-menu {
+    background-color: #ffc107;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: #212529;
+}

@@ -38,4 +38,19 @@ export const ROUTES = [
         path: '/product/edit/:id',
         component: ()=> import('./components/store/product/Edit.vue')
     },
+    {
+        name: 'showSupplier',
+        path: '/supplier',
+        component: ()=> import('./components/shopping/supplier/Show.vue'),
+    },
+    { 
+        name: 'createSupplier',
+        path: '/supplier/create',
+        component: ()=> import('./components/shopping/supplier/Create.vue') 
+    },
+    {
+        name: 'editSupplier',
+        path: '/supplier/edit/:id',
+        component: ()=> import('./components/shopping/supplier/Edit.vue')
+    },
 ];

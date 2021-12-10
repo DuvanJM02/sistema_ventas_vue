@@ -75,7 +75,7 @@ export default{
                 this.categories = response.data
             })
             .catch(error=>{
-                this.categories = []
+                console.log(error)
             })
         },
         searchItem(){
@@ -87,7 +87,7 @@ export default{
                 this.axios.delete(`/api/category/${id}`)
                 .then(response=>{
                     this.showCategories()
-                })
+                }) 
                 .catch(error=>{
                     console.log(error)
                 })

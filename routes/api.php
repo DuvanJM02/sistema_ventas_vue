@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +26,5 @@ Route::resource('category', CategoryController::class);
 Route::resource('product', ProductController::class);
 Route::post('product/{product}', [ProductController::class, 'update'])->name('product.update');
 Route::post('product/activate/{product}', [ProductController::class, 'activate'])->name('product.activate');
+
+Route::resource('supplier', SupplierController::class);
