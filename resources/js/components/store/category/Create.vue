@@ -43,7 +43,7 @@
             async create(){
                 await this.axios.post('/api/category', this.category)
                 .then(response=>{
-                    this.$router.push({name:"showCategory"})
+                    this.$router.push({name:"indexCategory"})
                 })
                 .catch(error=>{
                     console.log(error)

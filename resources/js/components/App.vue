@@ -42,7 +42,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <router-link exact-active-class="active" to="/product" class="dropdown-item" aria-current="page">
+                                    <router-link exact-active-class="active" to="/income" class="dropdown-item" aria-current="page">
                                         <i class="fas fa-dolly-flatbed"></i> Ingreso
                                     </router-link>
                                 </li>

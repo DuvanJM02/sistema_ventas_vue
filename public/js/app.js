@@ -2145,13 +2145,13 @@ var ROUTES = [{
   name: 'home',
   path: '/',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ "resources_js_components_store_product_Show_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/store/product/Show.vue */ "./resources/js/components/store/product/Show.vue"));
+    return __webpack_require__.e(/*! import() */ "resources_js_components_store_product_Index_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/store/product/Index.vue */ "./resources/js/components/store/product/Index.vue"));
   }
 }, {
-  name: 'showCategory',
+  name: 'indexCategory',
   path: '/category',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ "resources_js_components_store_category_Show_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/store/category/Show.vue */ "./resources/js/components/store/category/Show.vue"));
+    return __webpack_require__.e(/*! import() */ "resources_js_components_store_category_Index_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/store/category/Index.vue */ "./resources/js/components/store/category/Index.vue"));
   }
 }, {
   name: 'createCategory',
@@ -2166,10 +2166,10 @@ var ROUTES = [{
     return __webpack_require__.e(/*! import() */ "resources_js_components_store_category_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/store/category/Edit.vue */ "./resources/js/components/store/category/Edit.vue"));
   }
 }, {
-  name: 'showProduct',
+  name: 'indexProduct',
   path: '/product',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ "resources_js_components_store_product_Show_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/store/product/Show.vue */ "./resources/js/components/store/product/Show.vue"));
+    return __webpack_require__.e(/*! import() */ "resources_js_components_store_product_Index_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/store/product/Index.vue */ "./resources/js/components/store/product/Index.vue"));
   }
 }, {
   name: 'createProduct',
@@ -2184,10 +2184,10 @@ var ROUTES = [{
     return __webpack_require__.e(/*! import() */ "resources_js_components_store_product_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/store/product/Edit.vue */ "./resources/js/components/store/product/Edit.vue"));
   }
 }, {
-  name: 'showSupplier',
+  name: 'indexSupplier',
   path: '/supplier',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_supplier_Show_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/supplier/Show.vue */ "./resources/js/components/shopping/supplier/Show.vue"));
+    return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_supplier_Index_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/supplier/Index.vue */ "./resources/js/components/shopping/supplier/Index.vue"));
   }
 }, {
   name: 'createSupplier',
@@ -2200,6 +2200,30 @@ var ROUTES = [{
   path: '/supplier/edit/:id',
   component: function component() {
     return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_supplier_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/supplier/Edit.vue */ "./resources/js/components/shopping/supplier/Edit.vue"));
+  }
+}, {
+  name: 'indexIncome',
+  path: '/income',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_income_Index_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/income/Index.vue */ "./resources/js/components/shopping/income/Index.vue"));
+  }
+}, {
+  name: 'createIncome',
+  path: '/income/create',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_income_Create_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/income/Create.vue */ "./resources/js/components/shopping/income/Create.vue"));
+  }
+}, {
+  name: 'editIncome',
+  path: '/income/edit/:id',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_income_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/income/Edit.vue */ "./resources/js/components/shopping/income/Edit.vue"));
+  }
+}, {
+  name: 'showIncome',
+  path: '/income/:id',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_income_Show_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/income/Show.vue */ "./resources/js/components/shopping/income/Show.vue"));
   }
 }];
 
@@ -19808,7 +19832,7 @@ var render = function () {
                               staticClass: "dropdown-item",
                               attrs: {
                                 "exact-active-class": "active",
-                                to: "/product",
+                                to: "/income",
                                 "aria-current": "page",
                               },
                             },
@@ -35386,7 +35410,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_store_product_Show_vue":1,"resources_js_components_store_category_Show_vue":1,"resources_js_components_store_category_Create_vue":1,"resources_js_components_store_category_Edit_vue":1,"resources_js_components_store_product_Create_vue":1,"resources_js_components_store_product_Edit_vue":1,"resources_js_components_shopping_supplier_Show_vue":1,"resources_js_components_shopping_supplier_Create_vue":1,"resources_js_components_shopping_supplier_Edit_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_store_product_Index_vue":1,"resources_js_components_store_category_Index_vue":1,"resources_js_components_store_category_Create_vue":1,"resources_js_components_store_category_Edit_vue":1,"resources_js_components_store_product_Create_vue":1,"resources_js_components_store_product_Edit_vue":1,"resources_js_components_shopping_supplier_Index_vue":1,"resources_js_components_shopping_supplier_Create_vue":1,"resources_js_components_shopping_supplier_Edit_vue":1,"resources_js_components_shopping_income_Index_vue":1,"resources_js_components_shopping_income_Create_vue":1,"resources_js_components_shopping_income_Edit_vue":1,"resources_js_components_shopping_income_Show_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

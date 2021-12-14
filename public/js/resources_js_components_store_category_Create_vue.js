@@ -82,7 +82,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 2;
                 return _this.axios.post('/api/category', _this.category).then(function (response) {
                   _this.$router.push({
-                    name: "showCategory"
+                    name: "indexCategory"
                   });
                 })["catch"](function (error) {
                   console.log(error);

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserFormRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class SupplierController extends Controller
 {
@@ -13,9 +15,14 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request){
+            $query = trim($request->get('search'));
+            $suppliers = User::where('role', 'supplier')->where('name', 'like', '%' . $query . '%')->orderBy('id', 'desc')->get();
+
+            return response()->json($suppliers);
+        }
     }
 
     /**
@@ -40,7 +47,7 @@ class SupplierController extends Controller
 
         $supplier->name = $request->name;
         $supplier->email = $request->email;
-        $supplier->password = $request->password;
+        $supplier->password = bcrypt($request->password);
         $supplier->role = $request->role;
         $supplier->document = $request->document;
         $supplier->n_document = $request->n_document;
@@ -57,7 +64,6 @@ class SupplierController extends Controller
 
         $supplier->save();
 
-        dd($supplier);
         return response()->json(['supplier' => $supplier]);
     }
 
@@ -78,9 +84,9 @@ class SupplierController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        return response()->json(User::findOrFail($id));
     }
 
     /**
@@ -90,9 +96,46 @@ class SupplierController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserFormRequest $request, $id)
     {
-        //
+        $supplier = User::findOrFail($id);
+
+        $supplier->name = $request->name;
+        $supplier->email = $request->email;
+        $supplier->password = bcrypt($request->password);
+        $supplier->role = $request->role;
+        $supplier->document = $request->document;
+        $supplier->n_document = $request->n_document;
+        $supplier->location = $request->location;
+        $supplier->phone = $request->phone;
+        $supplier->status = $request->status;
+        $old_img = $supplier->img_path; 
+
+        try{
+            if ($request->img_path != $supplier->img_path) {
+                // unlink(public_path('/img/suppliers/' . $supplier->photo_path));
+
+                $img_path = public_path('img/users/'.$supplier->img_path);
+
+                // return $img_path;
+                if (File::exists($img_path)) {
+                    //File::delete($img_path);
+                    unlink($img_path);
+                }
+
+                $image = $request->file('img_path');
+                $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
+                $request->img_path->move(public_path() . '/img/users/', $namePhoto);
+                $supplier->img_path = $namePhoto;
+                $supplier->update();
+            }
+        }catch(Exception $e){
+            $supplier->img_path = $old_img;
+            $supplier->update();
+            return response()->json(['e' => $e]);
+        }
+
+        return response()->json(['supplier' => $supplier]);
     }
 
     /**
@@ -101,8 +144,23 @@ class SupplierController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        $supplier = User::findOrFail($id);
+        $supplier->status = '0';
+
+        $supplier->save();
+
+        return response()->json(['supplier' => $supplier]);
+    }
+
+    public function activate($id)
+    {
+        $supplier = User::findOrFail($id);
+        $supplier->status = '1';
+
+        $supplier->save();
+
+        return response()->json(['supplier' => $supplier]);
     }
 }

@@ -175,7 +175,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(response.data);
 
                   _this3.$router.push({
-                    name: "showProduct"
+                    name: "indexProduct"
                   });
                 })["catch"](function (error) {
                   console.log(error);

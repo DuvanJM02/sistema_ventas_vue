@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
@@ -28,3 +29,9 @@ Route::post('product/{product}', [ProductController::class, 'update'])->name('pr
 Route::post('product/activate/{product}', [ProductController::class, 'activate'])->name('product.activate');
 
 Route::resource('supplier', SupplierController::class);
+Route::post('supplier/{supplier}', [SupplierController::class, 'update'])->name('supplier.update');
+Route::post('supplier/activate/{supplier}', [SupplierController::class, 'activate'])->name('supplier.activate');
+
+Route::resource('income', IncomeController::class);
+Route::post('income/{income}', [IncomeController::class, 'update'])->name('income.update');
+// Route::post('supplier/activate/{supplier}', [SupplierController::class, 'activate'])->name('supplier.activate');

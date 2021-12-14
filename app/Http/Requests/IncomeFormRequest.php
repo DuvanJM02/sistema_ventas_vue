@@ -13,7 +13,7 @@ class IncomeFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,13 @@ class IncomeFormRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            't_comprobante' => 'required',
+            's_comprobante' => 'required',
+            'n_comprobante' => 'required',
+            'date' => 'required',
+            'tax' => 'required',
+            'status' => 'required',
+            'user_id' => 'required',
         ];
     }
 }

@@ -116,7 +116,7 @@
                 await this.axios.post('/api/product', formData)
                 .then(response=>{
                     console.log(response.data)
-                    this.$router.push({name:"showProduct"})
+                    this.$router.push({name:"indexProduct"})
                 })
                 .catch(error=>{
                      console.log(error)

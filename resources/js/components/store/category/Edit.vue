@@ -53,14 +53,13 @@
             async showData(){
                 await this.axios.get(`/api/category/${this.$route.params.id}/edit`)
                 .then(response=>{
-                    console.log(this.$route.params.id)
                     this.category = response.data
                 })
             },
             async edit(){
                 await this.axios.put(`/api/category/${this.$route.params.id}`, this.category)
                 .then(response=>{
-                    this.$router.push({name:"showCategory"})
+                    this.$router.push({name:"indexCategory"})
                 })
                 .catch(error=>{
                     console.log(error)

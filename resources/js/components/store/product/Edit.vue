@@ -88,6 +88,7 @@ export default{
                     status: 1,
                     category_id: "",
                     img_path: '',
+                    img_path2: '',
                 },
                 errors: []
             }
@@ -98,9 +99,9 @@ export default{
         methods:{
             getImage(e){
                 this.file = e.target.files[0];
-                this.product.img_path = this.file;
+                this.product.img_path2 = this.file;
                 this.uploadImg(this.file);
-                console.log(this.product.img_path)
+                console.log(this.product.img_path2)
             },
             uploadImg(file){
                 let reader = new FileReader()
@@ -108,7 +109,6 @@ export default{
                     this.imgThumb = e.target.result;
                 }
                 reader.readAsDataURL(file);
-                this.showData()
             },
             async showData(){
                 await this.axios.get(`/api/product/${this.$route.params.id}/edit`)
@@ -131,7 +131,7 @@ export default{
                 await this.axios.post('/api/product/' + this.$route.params.id, formData)
                 .then(response=>{
                     console.log(response.data)
-                    this.$router.push({name:"showProduct"})
+                    this.$router.push({name:"indexProduct"})
                 })
                 .catch(error=>{
                      console.log(response)

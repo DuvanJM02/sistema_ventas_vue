@@ -6,12 +6,12 @@ export const ROUTES = [
     {
         name: 'home',
         path: '/',
-        component: ()=> import('./components/store/product/Show.vue'),
+        component: ()=> import('./components/store/product/Index.vue'),
     },
     {
-        name: 'showCategory',
+        name: 'indexCategory',
         path: '/category',
-        component: ()=> import('./components/store/category/Show.vue'),
+        component: ()=> import('./components/store/category/Index.vue'),
     },
     { 
         name: 'createCategory',
@@ -24,9 +24,9 @@ export const ROUTES = [
         component: ()=> import('./components/store/category/Edit.vue')
     },
     {
-        name: 'showProduct',
+        name: 'indexProduct',
         path: '/product',
-        component: ()=> import('./components/store/product/Show.vue'),
+        component: ()=> import('./components/store/product/Index.vue'),
     },
     { 
         name: 'createProduct',
@@ -39,9 +39,9 @@ export const ROUTES = [
         component: ()=> import('./components/store/product/Edit.vue')
     },
     {
-        name: 'showSupplier',
+        name: 'indexSupplier',
         path: '/supplier',
-        component: ()=> import('./components/shopping/supplier/Show.vue'),
+        component: ()=> import('./components/shopping/supplier/Index.vue'),
     },
     { 
         name: 'createSupplier',
@@ -52,5 +52,25 @@ export const ROUTES = [
         name: 'editSupplier',
         path: '/supplier/edit/:id',
         component: ()=> import('./components/shopping/supplier/Edit.vue')
+    },
+    {
+        name: 'indexIncome',
+        path: '/income',
+        component: ()=> import('./components/shopping/income/Index.vue'),
+    },
+    { 
+        name: 'createIncome',
+        path: '/income/create',
+        component: ()=> import('./components/shopping/income/Create.vue') 
+    },
+    {
+        name: 'editIncome',
+        path: '/income/edit/:id',
+        component: ()=> import('./components/shopping/income/Edit.vue')
+    },
+    {
+        name: 'showIncome',
+        path: '/income/:id',
+        component: ()=> import('./components/shopping/income/Show.vue'),
     },
 ];

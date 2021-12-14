@@ -118,7 +118,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         stock: "",
         status: 1,
         category_id: "",
-        img_path: ''
+        img_path: '',
+        img_path2: ''
       },
       errors: []
     };
@@ -129,9 +130,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   methods: {
     getImage: function getImage(e) {
       this.file = e.target.files[0];
-      this.product.img_path = this.file;
+      this.product.img_path2 = this.file;
       this.uploadImg(this.file);
-      console.log(this.product.img_path);
+      console.log(this.product.img_path2);
     },
     uploadImg: function uploadImg(file) {
       var _this = this;
@@ -143,7 +144,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       };
 
       reader.readAsDataURL(file);
-      this.showData();
     },
     showData: function showData() {
       var _this2 = this;
@@ -191,7 +191,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(response.data);
 
                   _this3.$router.push({
-                    name: "showProduct"
+                    name: "indexProduct"
                   });
                 })["catch"](function (error) {
                   console.log(response);

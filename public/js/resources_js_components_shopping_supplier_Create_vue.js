@@ -192,7 +192,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(response.data);
 
                   _this2.$router.push({
-                    name: "showSupplier"
+                    name: "indexSupplier"
                   });
                 })["catch"](function (error) {
                   console.log(error);

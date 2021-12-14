@@ -4,13 +4,10 @@
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Registrar proveedor</h4>
+                        <h4>Actualizar ingreso</h4>
                     </div>
                     <div class="card-body">
-                        <div class="alert alert-danger" role="alert" v-if="message">
-                            <strong>{{ message }}</strong>
-                        </div>
-                        <form @submit.prevent="create" enctype="multipart/form-data">
+                        <form @submit.prevent="edit" enctype="multipart/formdata">
                             <div class="form-group">
                                 <label for="name">Nombre</label>
                                 <input class="form-control" type="text" v-model="user.name" autofocus>
@@ -60,27 +57,42 @@
                     </div>
                 </div>
             </div>
-             <div class="col-lg-4">
-                <div class="card" v-if="imagen">
-                    <div class="card-header">
-                        <h4>{{ user.name }}</h4>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div>
+                        <div class="card-header">
+                            <h4>Imágen anterior: {{ user.name }}</h4>
+                        </div>
+                        <div class="card-body">
+                            <a v-bind:href="'/img/users/' + user.img_path" data-lightbox="image-1" >
+                                <img :src="'/img/users/' + user.img_path" v-bind:alt="user.name" width="100%">
+                            </a>
+                        </div>
                     </div>
-                    <div class="card-body d-flex justify-content-center">
-                        <a class="profile-photo" :href="imagen" data-lightbox='imagen'>
-                            <img :src="imagen" alt="" width="100%">
-                        </a>
+                    <div v-if="imagen">
+                        <div class="card-header">
+                            <h4>Imágen nueva</h4>
+                        </div>
+                        <div class="card-body">
+                            <a :href="imagen" data-lightbox="image-1" >
+                                <img :src="imagen" alt="" width="100%">
+                            </a>
+                            
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> 
+        </div> 
     </div>
 </template>
 
 <script>
-    export default {
-        name: "createSupplier",
+export default{
+        name: "editarSupplier",
         data(){
             return{
+                file: '',
+                imgThumb: null,
                 user: {
                     name: null,
                     email: null,
@@ -91,40 +103,38 @@
                     location: null,
                     phone: null,
                     img_path: null,
+                    img_path2: null,
                     role: 'supplier',
                     status: 1,
                 },
-                imgThumb: null,
-                message: null,
+                errors: []
             }
         },
         created(){
+            this.showData()
         },
         methods:{
             getImage(e){
-                let file = e.target.files[0];
-                console.log(file)
-                this.user.img_path = file;
-                this.uploadImg(file);
+                this.file = e.target.files[0];
+                this.user.img_path2 = this.file;
+                this.uploadImg(this.file);
+                console.log(this.user.img_path)
+                console.log(this.user.img_path2)
             },
             uploadImg(file){
-                let reader = new FileReader() 
+                let reader = new FileReader()
                 reader.onload = (e) => {
                     this.imgThumb = e.target.result;
                 }
                 reader.readAsDataURL(file);
             },
-            // async showCategory(){
-            //     await this.axios.get('/api/product/create')
-            //     .then(response=>{
-            //         console.log(response.data)
-            //         this.categories = response.data
-            //     })
-            //     .catch(error=>{
-            //         console.log(error)
-            //     })
-            // },
-            async create(){
+            async showData(){
+                await this.axios.get(`/api/supplier/${this.$route.params.id}/edit`)
+                .then(response=>{
+                    this.user = response.data
+                })
+            },
+            async edit(){
                 let formData = new FormData();
                 formData.append('name', this.user.name)
                 formData.append('email', this.user.email)
@@ -136,14 +146,13 @@
                 formData.append('phone', this.user.phone)
                 formData.append('status', this.user.status)
                 formData.append('role', this.user.role)
-                formData.append('img_path', this.user.img_path)
-                console.log(formData)
+                formData.append('img_path', this.user.img_path2)
                 console.log(this.user)
                 if(this.user.password == this.user.current_password){
-                    await this.axios.post('/api/supplier', formData)
+                    await this.axios.post('/api/supplier/' + this.$route.params.id, formData)
                     .then(response=>{
                         console.log(response.data)
-                        this.$router.push({name:"indexSupplier"})
+                        this.$router.push({name:"showSupplier"})
                     })
                     .catch(error=>{
                         console.log(error)
@@ -158,7 +167,7 @@
         },
         computed:{
             imagen(){
-                return this.imgThumb;
+                return this.imgThumb; 
             }
         }
     }
