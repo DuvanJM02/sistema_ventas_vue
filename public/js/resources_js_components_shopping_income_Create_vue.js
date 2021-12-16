@@ -237,6 +237,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.errors = "¡Debe rellenar todos los campos!";
       }
     },
+    eliminar: function eliminar(index) {
+      this.total = this.total - this.subtotal[index];
+      var t = document.getElementById("total");
+      t.innerHTML = this.total;
+      var df = document.getElementById("fila");
+      df.innerHTML = "";
+    },
     limpiar: function limpiar() {
       this.pquantity = '';
       this.ppurchase_price = '';

@@ -224,6 +224,13 @@
                     this.errors = "¡Debe rellenar todos los campos!"
                 }
             },
+            eliminar(index){
+                this.total = this.total - this.subtotal[index];
+                var t = document.getElementById("total");
+                t.innerHTML = this.total;
+                var df = document.getElementById("fila");
+                df.innerHTML = "";
+            },
             limpiar(){
                 this.pquantity = ''
                 this.ppurchase_price = ''
