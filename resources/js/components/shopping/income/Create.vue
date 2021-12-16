@@ -2,7 +2,7 @@
     <div class="container mt-5">
         <form @submit.prevent="create">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
                             <h4>Crear ingreso</h4>
@@ -39,6 +39,7 @@
                             <div class="form-group mt-3">
                                 <label for="pproduct_id">Producto</label>
                                 <select name="pproduct_id" id="pproduct_id" class="form-control" v-model="pproduct_id">
+                                    <option value="">Seleccione un producto</option>
                                     <option v-for="product in products" :key="product.id" :value="product.id">
                                         {{ product.id + ' - ' + product.product }}
                                     </option>
@@ -53,9 +54,26 @@
                                 <input class="form-control" type="number" min="0" v-model="ppurchase_price">
                             </div>
                             <div class="form-group mt-3">
-                                <button type="button" class="btn btn-warning" id="btn_Add">Agregar</button>
+                                <label for="psale_price">Precio de venta</label>
+                                <input class="form-control" type="number" min="0" v-model="psale_price">
+                            </div>
+                            <div class="form-group my-3">
+                                <button type="button" class="btn btn-warning" id="btn_Add" @click="agregar()">Agregar</button>
                             </div>
                             <div class="col-lg-12">
+                                <div v-if="errors" class="my-3">
+                                    <div>
+                                        <div id="liveAlertPlaceholder slide-fade">
+                                            <div class="alert alert-danger alert-alert-dismissible" role="alert">
+                                                <i class="fas fa-exclamation-circle"></i>
+                                                {{ errors }}
+                                                <span class="end">
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <table id="details" class="table table-striped table-bordered table-condensed table-hover">
                                         <thead style="background: cadetblue;">
@@ -72,7 +90,7 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
-                                            <th><h4 id="total">$ . 0</h4></th>
+                                            <th><h4>$ <span id="total">. 0</span></h4></th>
                                         </tfoot>
                                         <tbody>
 
@@ -116,14 +134,20 @@
                 pquantity: '',
                 ppurchase_price: '',
                 psale_price: '',
+                producto: '',
+                cont: 0,
+                total: 0,
+                subtotal: [],
                 users: [],
                 products: [],
                 imgThumb: null,
                 message: null,
+                errors: '',
             }
         },
         created(){
             this.showData();
+            this.limpiar();
         },
         methods:{
             getImage(e){
@@ -149,6 +173,62 @@
             //         console.log(error)
             //     })
             // },
+            agregar(){
+                let product_id = this.pproduct_id
+                if(!this.products[product_id-1].product){
+                    this.errors = "¡Debe rellenar todos los campos!"
+                    alert(this.errors)
+                }
+                this.producto = this.products[product_id-1].product
+                // this.producto = this.$refs.producto.value
+                let quantity = this.pquantity
+                let purchase_price = this.ppurchase_price
+                let sale_price = this.psale_price
+
+
+                if(product_id != '' && quantity != '' && quantity > 0 && purchase_price != '' && sale_price != ''){
+                    this.subtotal[this.cont] = (quantity * purchase_price)
+                    this.total = this.total + this.subtotal[this.cont]
+
+                    var fila = `
+                        <tr class="selected" id="fila${this.cont}">
+                            <td>
+                                <button type="button" class="btn btn-danger" onclick="eliminar(${this.cont});">x</button>
+                            </td>
+                            <td>
+                                <input class="form-control" type="hidden" name="product_id[]" value="${product_id}">
+                                ${this.producto}
+                            </td>
+                            <td>
+                                <input class="form-control" type="number" name="quantity[]" value="${quantity}">
+                            </td>
+                            <td>
+                                <input class="form-control" type="number" name="purchase_price[]" value="${purchase_price}">
+                            </td>
+                            <td>
+                                <input class="form-control" type="number" name="sale_price[]" value="${sale_price}">
+                            </td>
+                            <td>
+                                ${this.subtotal[this.cont]}
+                            </td>
+                        </tr>
+                    `
+                    this.cont++
+                    var t = document.getElementById("total");
+                    t.innerHTML = this.total;
+                    this.limpiar()
+                    console.log(fila)
+                    var tabla = document.getElementById("details");
+                    tabla.insertRow(-1).innerHTML = fila;
+                }else{
+                    this.errors = "¡Debe rellenar todos los campos!"
+                }
+            },
+            limpiar(){
+                this.pquantity = ''
+                this.ppurchase_price = ''
+                this.psale_price = ''
+            },
             async showData(){
                 await this.axios.get('/api/income/create')
                 .then(response=>{

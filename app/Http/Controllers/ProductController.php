@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 // use Faker\Core\File;
 use Illuminate\Support\Facades\File; 
 use Faker\Provider\File as ProviderFile;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -21,19 +22,26 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        if($request){
-            $query = trim($request->get('search'));
-            $products = DB::table('products as p')
-            ->join('categories as c', 'p.category_id', 'c.id')
-            ->select('p.id', 'p.code', 'p.name', 'p.description', 'p.stock', 'p.status', 'p.img_path', 'c.name as category')
-            ->where('p.name', 'like', '%' . $query . '%')
-            ->orWhere('p.code', 'like', '%' . $query . '%')
-            ->orderBy('p.id', 'desc')
-            ->get();
+        $cache_products = Cache::get('products');
 
+        if($cache_products){
+            $products = $cache_products;
             return response()->json($products);
- 
-            // return response()->json($query);
+        }else{
+            if($request){
+                $query = trim($request->get('search'));
+                $products = DB::table('products as p')
+                ->join('categories as c', 'p.category_id', 'c.id')
+                ->select('p.id', 'p.code', 'p.name', 'p.description', 'p.stock', 'p.status', 'p.img_path', 'c.name as category')
+                ->where('p.name', 'like', '%' . $query . '%')
+                ->orWhere('p.code', 'like', '%' . $query . '%')
+                ->orderBy('p.id', 'desc')
+                ->get();
+
+                Cache::forever('products', $products);
+
+                return response()->json($products);
+            }
         }
     } 
 
@@ -76,8 +84,6 @@ class ProductController extends Controller
             $product->img_path = $namePhoto;
         }
  
-        // dd($request->img_path);
-
         $product->save();
 
         return response()->json(['product' => $product]);
@@ -172,6 +178,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        Cache::forget('products');
+        // dd($id);
         $product = Product::findOrFail($id);
         $product->status = '0';
 
@@ -184,6 +192,7 @@ class ProductController extends Controller
 
     public function activate($id)
     {
+        Cache::forget('products');
         $product = Product::findOrFail($id);
         $product->status = '1';
 

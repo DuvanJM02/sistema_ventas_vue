@@ -15,6 +15,32 @@
                 </form>
             </div>
             <div class="col-12">
+                <div v-if="products == '' && !errors">
+                    <div>
+                        <div id="liveAlertPlaceholder">
+                            <div class="alert alert-primary alert-alert-dismissible" role="alert">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Cargando base de datos...
+                                <span class="end">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="errors">
+                    <div>
+                        <div id="liveAlertPlaceholder slide-fade">
+                            <div class="alert alert-danger alert-alert-dismissible" role="alert">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Error de conexión con la base de datos...
+                                <span class="end">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-light table-striped">
                         <thead class="table-bordered">
@@ -50,12 +76,12 @@
                                     <router-link :to='{name:"editProduct", params:{id:product.id}}' class="btn btn-warning">
                                         <i class="fas fa-edit"></i>
                                     </router-link>
-                                    <div class="d-inline" v-if="product.status">
+                                    <div class="d-inline" v-if="product.status == 1">
                                         <a class="btn btn-danger" type="button" @click="deleteProduct(product.id)" >
                                             <i class="fas fa-eye-slash"></i>
                                         </a>
                                     </div>
-                                    <div class="d-inline" v-if="!product.status">
+                                    <div class="d-inline" v-if="product.status == 0">
                                         <a class="btn btn-success" type="button" @click="activateProduct(product.id)" >
                                             <i class="fas fa-eye"></i>
                                         </a>
@@ -79,7 +105,8 @@ export default{
         return{
             products:[],
             search: "",
-            setTimeoutSearch: ''
+            setTimeoutSearch: '',
+            errors: '',
         }
     },
     created(){
@@ -96,7 +123,8 @@ export default{
                 this.products = response.data
             })
             .catch(error=>{
-                console.log(error)
+                this.errors = error
+                console.log(this.errors)
             })
         },
         searchItem(){
@@ -110,7 +138,9 @@ export default{
                     this.showProducts()
                 })
                 .catch(error=>{
-                    console.log(error) 
+                    console.log(error)
+                    this.errors = error
+                    console.log(this.errors)
                 })
             } 
         },
@@ -121,7 +151,8 @@ export default{
                     this.showProducts()
                 })
                 .catch(error=>{
-                    console.log(error)
+                    this.errors = error
+                    console.log(this.errors)
                 })
             }
         }

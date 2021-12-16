@@ -43,7 +43,8 @@ class IncomeController extends Controller
     {
         $users = User::where('role', 'supplier')->get();
         $products = DB::table('products as p')
-        ->select(DB::raw("CONCAT(p.code, ' - ', p.name) as product"), 'p.id')
+        // ->select(DB::raw("CONCAT(p.code, ' - ', p.name) as product"), 'p.id')
+        ->select(DB::raw("p.name as product"), 'p.id')
         ->where('p.status', '1')->get();  
 
         return response()->json([ $users, $products ]);

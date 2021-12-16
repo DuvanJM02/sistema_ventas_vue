@@ -15,6 +15,32 @@
                 </form>
             </div>
             <div class="col-12">
+                <div v-if="suppliers == '' && !errors">
+                    <div>
+                        <div id="liveAlertPlaceholder">
+                            <div class="alert alert-primary alert-alert-dismissible" role="alert">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Cargando base de datos...
+                                <span class="end">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="errors">
+                    <div>
+                        <div id="liveAlertPlaceholder slide-fade">
+                            <div class="alert alert-danger alert-alert-dismissible" role="alert">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Error de conexión con la base de datos...
+                                <span class="end">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-light table-striped align-middle">
                         <thead class="table-bordered">
@@ -85,7 +111,8 @@ export default{
         return{
             suppliers:[],
             search: "",
-            setTimeoutSearch: ''
+            setTimeoutSearch: '',
+            errors: '',
         }
     },
     created(){
@@ -102,7 +129,8 @@ export default{
                 this.suppliers = response.data
             })
             .catch(error=>{
-                console.log(error)
+                this.errors = error
+                console.log(this.errors)
             })
         },
         searchItem(){
@@ -116,7 +144,8 @@ export default{
                     this.showSuppliers()
                 })
                 .catch(error=>{
-                    console.log(error) 
+                    this.errors = error
+                    console.log(this.errors) 
                 })
             } 
         },
@@ -127,7 +156,8 @@ export default{
                     this.showSuppliers()
                 })
                 .catch(error=>{
-                    console.log(error)
+                    this.errors = error
+                    console.log(this.errors)
                 })
             }
         }

@@ -15,6 +15,32 @@
                 </form>
             </div>
             <div class="col-12">
+                <div v-if="categories == '' && !errors">
+                    <div>
+                        <div id="liveAlertPlaceholder">
+                            <div class="alert alert-primary alert-alert-dismissible" role="alert">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Cargando base de datos...
+                                <span class="end">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="errors">
+                    <div>
+                        <div id="liveAlertPlaceholder slide-fade">
+                            <div class="alert alert-danger alert-alert-dismissible" role="alert">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Error de conexión con la base de datos...
+                                <span class="end">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-success table-striped">
                         <thead class="table-bordered">
@@ -46,6 +72,19 @@
                 </div>
             </div>
         </div>
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img class="rounded me-2">
+                    <strong class="me-auto">Bootstrap</strong>
+                    <small>11 mins ago</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Hello, world! This is a toast message.
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -58,7 +97,8 @@ export default{
         return{
             categories:[],
             search: "",
-            setTimeoutSearch: ''
+            setTimeoutSearch: '',
+            errors: ''
         }
     },
     created(){
@@ -75,7 +115,8 @@ export default{
                 this.categories = response.data
             })
             .catch(error=>{
-                console.log(error)
+                this.errors = error
+                console.log(this.errors)
             })
         },
         searchItem(){
@@ -89,7 +130,8 @@ export default{
                     this.showCategories()
                 }) 
                 .catch(error=>{
-                    console.log(error)
+                    this.errors = error
+                    console.log(this.errors)
                 })
             }
         }

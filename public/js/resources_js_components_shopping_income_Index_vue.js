@@ -73,13 +73,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "income",
   data: function data() {
     return {
       incomes: [],
       search: "",
-      setTimeoutSearch: ''
+      setTimeoutSearch: '',
+      errors: ''
     };
   },
   created: function created() {
@@ -96,7 +123,8 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this.incomes = response.data;
       })["catch"](function (error) {
-        console.log(error);
+        _this.errors = error;
+        console.log(_this.errors);
       });
     },
     searchItem: function searchItem() {
@@ -110,7 +138,8 @@ __webpack_require__.r(__webpack_exports__);
         this.axios["delete"]("/api/income/".concat(id)).then(function (response) {
           _this2.showIncomes();
         })["catch"](function (error) {
-          console.log(error);
+          _this2.errors = error;
+          console.log(_this2.errors);
         });
       }
     },
@@ -121,7 +150,8 @@ __webpack_require__.r(__webpack_exports__);
         this.axios.post("/api/income/activate/".concat(id)).then(function (response) {
           _this3.showIncomes();
         })["catch"](function (error) {
-          console.log(error);
+          _this3.errors = error;
+          console.log(_this3.errors);
         });
       }
     }
@@ -276,12 +306,16 @@ var render = function () {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-12" }, [
+        _vm.incomes == "" && !_vm.errors ? _c("div", [_vm._m(1)]) : _vm._e(),
+        _vm._v(" "),
+        _vm.errors ? _c("div", [_vm._m(2)]) : _vm._e(),
+        _vm._v(" "),
         _c("div", { staticClass: "table-responsive" }, [
           _c(
             "table",
             { staticClass: "table table-light table-striped align-middle" },
             [
-              _vm._m(1),
+              _vm._m(3),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -386,6 +420,73 @@ var staticRenderFns = [
       { staticClass: "btn btn-success", attrs: { type: "submit" } },
       [_c("i", { staticClass: "fa fa-search" })]
     )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("div", { attrs: { id: "liveAlertPlaceholder" } }, [
+        _c(
+          "div",
+          {
+            staticClass: "alert alert-primary alert-alert-dismissible",
+            attrs: { role: "alert" },
+          },
+          [
+            _c("span", {
+              staticClass: "spinner-border spinner-border-sm",
+              attrs: { role: "status", "aria-hidden": "true" },
+            }),
+            _vm._v(
+              "\n                            Cargando base de datos...\n                            "
+            ),
+            _c("span", { staticClass: "end" }, [
+              _c("button", {
+                staticClass: "btn-close",
+                attrs: {
+                  type: "button",
+                  "data-bs-dismiss": "alert",
+                  "aria-label": "Close",
+                },
+              }),
+            ]),
+          ]
+        ),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("div", { attrs: { id: "liveAlertPlaceholder slide-fade" } }, [
+        _c(
+          "div",
+          {
+            staticClass: "alert alert-danger alert-alert-dismissible",
+            attrs: { role: "alert" },
+          },
+          [
+            _c("i", { staticClass: "fas fa-exclamation-circle" }),
+            _vm._v(
+              "\n                            Error de conexión con la base de datos...\n                            "
+            ),
+            _c("span", { staticClass: "end" }, [
+              _c("button", {
+                staticClass: "btn-close",
+                attrs: {
+                  type: "button",
+                  "data-bs-dismiss": "alert",
+                  "aria-label": "Close",
+                },
+              }),
+            ]),
+          ]
+        ),
+      ]),
+    ])
   },
   function () {
     var _vm = this

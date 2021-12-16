@@ -135,6 +135,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "createSupplier",
   data: function data() {
@@ -147,14 +165,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       pquantity: '',
       ppurchase_price: '',
       psale_price: '',
+      producto: '',
+      cont: 0,
+      total: 0,
+      subtotal: [],
       users: [],
       products: [],
       imgThumb: null,
-      message: null
+      message: null,
+      errors: ''
     };
   },
   created: function created() {
     this.showData();
+    this.limpiar();
   },
   methods: {
     getImage: function getImage(e) {
@@ -184,6 +208,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     //         console.log(error)
     //     })
     // },
+    agregar: function agregar() {
+      var product_id = this.pproduct_id;
+
+      if (!this.products[product_id - 1].product) {
+        this.errors = "¡Debe rellenar todos los campos!";
+        alert(this.errors);
+      }
+
+      this.producto = this.products[product_id - 1].product; // this.producto = this.$refs.producto.value
+
+      var quantity = this.pquantity;
+      var purchase_price = this.ppurchase_price;
+      var sale_price = this.psale_price;
+
+      if (product_id != '' && quantity != '' && quantity > 0 && purchase_price != '' && sale_price != '') {
+        this.subtotal[this.cont] = quantity * purchase_price;
+        this.total = this.total + this.subtotal[this.cont];
+        var fila = "\n                    <tr class=\"selected\" id=\"fila".concat(this.cont, "\">\n                        <td>\n                            <button type=\"button\" class=\"btn btn-danger\" onclick=\"eliminar(").concat(this.cont, ");\">x</button>\n                        </td>\n                        <td>\n                            <input class=\"form-control\" type=\"hidden\" name=\"product_id[]\" value=\"").concat(product_id, "\">\n                            ").concat(this.producto, "\n                        </td>\n                        <td>\n                            <input class=\"form-control\" type=\"number\" name=\"quantity[]\" value=\"").concat(quantity, "\">\n                        </td>\n                        <td>\n                            <input class=\"form-control\" type=\"number\" name=\"purchase_price[]\" value=\"").concat(purchase_price, "\">\n                        </td>\n                        <td>\n                            <input class=\"form-control\" type=\"number\" name=\"sale_price[]\" value=\"").concat(sale_price, "\">\n                        </td>\n                        <td>\n                            ").concat(this.subtotal[this.cont], "\n                        </td>\n                    </tr>\n                ");
+        this.cont++;
+        var t = document.getElementById("total");
+        t.innerHTML = this.total;
+        this.limpiar();
+        console.log(fila);
+        var tabla = document.getElementById("details");
+        tabla.insertRow(-1).innerHTML = fila;
+      } else {
+        this.errors = "¡Debe rellenar todos los campos!";
+      }
+    },
+    limpiar: function limpiar() {
+      this.pquantity = '';
+      this.ppurchase_price = '';
+      this.psale_price = '';
+    },
     showData: function showData() {
       var _this2 = this;
 
@@ -1141,7 +1199,7 @@ var render = function () {
       },
       [
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-lg-8" }, [
+          _c("div", { staticClass: "col-lg-12" }, [
             _c("div", { staticClass: "card" }, [
               _vm._m(0),
               _vm._v(" "),
@@ -1354,20 +1412,26 @@ var render = function () {
                         },
                       },
                     },
-                    _vm._l(_vm.products, function (product) {
-                      return _c(
-                        "option",
-                        { key: product.id, domProps: { value: product.id } },
-                        [
-                          _vm._v(
-                            "\n                                    " +
-                              _vm._s(product.id + " - " + product.product) +
-                              "\n                                "
-                          ),
-                        ]
-                      )
-                    }),
-                    0
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Seleccione un producto"),
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.products, function (product) {
+                        return _c(
+                          "option",
+                          { key: product.id, domProps: { value: product.id } },
+                          [
+                            _vm._v(
+                              "\n                                    " +
+                                _vm._s(product.id + " - " + product.product) +
+                                "\n                                "
+                            ),
+                          ]
+                        )
+                      }),
+                    ],
+                    2
                   ),
                 ]),
                 _vm._v(" "),
@@ -1427,9 +1491,87 @@ var render = function () {
                   }),
                 ]),
                 _vm._v(" "),
-                _vm._m(1),
+                _c("div", { staticClass: "form-group mt-3" }, [
+                  _c("label", { attrs: { for: "psale_price" } }, [
+                    _vm._v("Precio de venta"),
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.psale_price,
+                        expression: "psale_price",
+                      },
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "number", min: "0" },
+                    domProps: { value: _vm.psale_price },
+                    on: {
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.psale_price = $event.target.value
+                      },
+                    },
+                  }),
+                ]),
                 _vm._v(" "),
-                _vm._m(2),
+                _c("div", { staticClass: "form-group my-3" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-warning",
+                      attrs: { type: "button", id: "btn_Add" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.agregar()
+                        },
+                      },
+                    },
+                    [_vm._v("Agregar")]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-lg-12" }, [
+                  _vm.errors
+                    ? _c("div", { staticClass: "my-3" }, [
+                        _c("div", [
+                          _c(
+                            "div",
+                            {
+                              attrs: { id: "liveAlertPlaceholder slide-fade" },
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "alert alert-danger alert-alert-dismissible",
+                                  attrs: { role: "alert" },
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fas fa-exclamation-circle",
+                                  }),
+                                  _vm._v(
+                                    "\n                                            " +
+                                      _vm._s(_vm.errors) +
+                                      "\n                                            "
+                                  ),
+                                  _vm._m(1),
+                                ]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm._m(2),
+                ]),
                 _vm._v(" "),
                 _vm._m(3),
               ]),
@@ -1485,65 +1627,66 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group mt-3" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-warning",
-          attrs: { type: "button", id: "btn_Add" },
+    return _c("span", { staticClass: "end" }, [
+      _c("button", {
+        staticClass: "btn-close",
+        attrs: {
+          type: "button",
+          "data-bs-dismiss": "alert",
+          "aria-label": "Close",
         },
-        [_vm._v("Agregar")]
-      ),
+      }),
     ])
   },
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-12" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c(
-          "table",
-          {
-            staticClass:
-              "table table-striped table-bordered table-condensed table-hover",
-            attrs: { id: "details" },
-          },
-          [
-            _c("thead", { staticStyle: { background: "cadetblue" } }, [
-              _c("th", [_vm._v("Opciones")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Producto")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Cantidad")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Precio compra")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Precio venta")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Subtotal")]),
-            ]),
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "table",
+        {
+          staticClass:
+            "table table-striped table-bordered table-condensed table-hover",
+          attrs: { id: "details" },
+        },
+        [
+          _c("thead", { staticStyle: { background: "cadetblue" } }, [
+            _c("th", [_vm._v("Opciones")]),
             _vm._v(" "),
-            _c("tfoot", { staticStyle: { border: "1px solid cadetblue" } }, [
-              _c("th", [_c("strong", [_vm._v("TOTAL")])]),
-              _vm._v(" "),
-              _c("th"),
-              _vm._v(" "),
-              _c("th"),
-              _vm._v(" "),
-              _c("th"),
-              _vm._v(" "),
-              _c("th"),
-              _vm._v(" "),
-              _c("th", [
-                _c("h4", { attrs: { id: "total" } }, [_vm._v("$ . 0")]),
+            _c("th", [_vm._v("Producto")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Cantidad")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Precio compra")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Precio venta")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Subtotal")]),
+          ]),
+          _vm._v(" "),
+          _c("tfoot", { staticStyle: { border: "1px solid cadetblue" } }, [
+            _c("th", [_c("strong", [_vm._v("TOTAL")])]),
+            _vm._v(" "),
+            _c("th"),
+            _vm._v(" "),
+            _c("th"),
+            _vm._v(" "),
+            _c("th"),
+            _vm._v(" "),
+            _c("th"),
+            _vm._v(" "),
+            _c("th", [
+              _c("h4", [
+                _vm._v("$ "),
+                _c("span", { attrs: { id: "total" } }, [_vm._v(". 0")]),
               ]),
             ]),
-            _vm._v(" "),
-            _c("tbody"),
-          ]
-        ),
-      ]),
+          ]),
+          _vm._v(" "),
+          _c("tbody"),
+        ]
+      ),
     ])
   },
   function () {

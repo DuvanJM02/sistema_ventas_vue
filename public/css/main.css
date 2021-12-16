@@ -1,4 +1,4 @@
-*{
+* {
     transition: all 0.5s;
 }
 
@@ -17,8 +17,8 @@ a {
     padding-right: 10px;
 }
 
-.profile-photo{
-    border-radius: 50%!important;
+.profile-photo {
+    border-radius: 50% !important;
     box-sizing: border-box;
     width: 200px;
     height: 200px;
@@ -33,4 +33,22 @@ a {
 
 .dropdown-item.active, .dropdown-item:active {
     background-color: #212529;
+}
+
+.end {
+    position: absolute;
+    right: 20px;
+}
+
+.slide-fade{
+    transition: all .3s ease;
+}
+
+.slide-fade{
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.slide-fade{
+    transform: translateX(10px);
+    opacity: 0;
 }
