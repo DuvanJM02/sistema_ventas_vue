@@ -242,7 +242,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var t = document.getElementById("total");
       t.innerHTML = this.total;
       var df = document.getElementById("fila");
-      df.innerHTML = "";
+      df.innerHTML = "s";
     },
     limpiar: function limpiar() {
       this.pquantity = '';

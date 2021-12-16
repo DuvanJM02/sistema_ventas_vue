@@ -229,7 +229,7 @@
                 var t = document.getElementById("total");
                 t.innerHTML = this.total;
                 var df = document.getElementById("fila");
-                df.innerHTML = "";
+                df.innerHTML = "s";
             },
             limpiar(){
                 this.pquantity = ''
