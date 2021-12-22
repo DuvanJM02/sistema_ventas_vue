@@ -1,6 +1,7 @@
 <template>
     <div class="container mt-5">
-        <form @submit.prevent="create">
+        <form action="api/income-store" method="GET">
+            <input type="hidden" name="_token" :value="csrf">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
@@ -32,13 +33,13 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="n_comprobante">N° de comprobante</label>
-                                <input class="form-control" type="password" name="n_comprobante" id="n_comprobante" v-model="n_comprobante">
+                                <input class="form-control" type="number" id="n_comprobante" v-model="n_comprobante">
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="form-group mt-3">
                                 <label for="pproduct_id">Producto</label>
-                                <select name="pproduct_id" id="pproduct_id" class="form-control" v-model="pproduct_id">
+                                <select id="pproduct_id" class="form-control" v-model="pproduct_id">
                                     <option value="">Seleccione un producto</option>
                                     <option v-for="product in products" :key="product.id" :value="product.id">
                                         {{ product.id + ' - ' + product.product }}
@@ -92,8 +93,28 @@
                                             <th></th>
                                             <th><h4>$ <span id="total">. 0</span></h4></th>
                                         </tfoot>
-                                        <tbody>
-
+                                        <tbody v-if="iquantity != ''">
+                                            <tr class="selected" id="cont">
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" onclick="">x</button>
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" type="hidden" v-model="iproduct_id">
+                                                    {{producto}}
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" type="number" v-model="iquantity" value="quantity">
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" type="number" v-model="ipurchase_price">
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" type="number" v-model="isale_price">
+                                                </td>
+                                                <td>
+                                                    {{subtotal}}
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -123,9 +144,11 @@
 
 <script>
     export default {
-        name: "createSupplier",
+        name: "createIncome",
         data(){
             return{
+                csrf: null,
+                income_store: null,
                 user_id: '',
                 t_comprobante: '',
                 s_comprobante: '',
@@ -139,7 +162,12 @@
                 total: 0,
                 subtotal: [],
                 users: [],
+                i: '',
                 products: [],
+                iproduct_id: [],
+                iquantity: [],
+                ipurchase_price: [],
+                isale_price: [],
                 imgThumb: null,
                 message: null,
                 errors: '',
@@ -148,6 +176,8 @@
         created(){
             this.showData();
             this.limpiar();
+            this.getCsrf();
+            this.getIncomeStore();
         },
         methods:{
             getImage(e){
@@ -155,6 +185,12 @@
                 console.log(file)
                 this.user.img_path = file;
                 this.uploadImg(file);
+            },
+            getCsrf(){
+                this.csrf = document.getElementsByTagName('meta').csrf.content;
+            },
+            getIncomeStore(){
+                this.income_store = document.getElementsByTagName('meta').incomestore.content;
             },
             uploadImg(file){
                 let reader = new FileReader() 
@@ -174,55 +210,87 @@
             //     })
             // },
             agregar(){
-                let product_id = this.pproduct_id
-                if(!this.products[product_id-1].product){
+
+                this.iproduct_id.push(this.pproduct_id)
+                if(!this.products[this.pproduct_id-1].product){
                     this.errors = "¡Debe rellenar todos los campos!"
                     alert(this.errors)
                 }
-                this.producto = this.products[product_id-1].product
+                this.producto = this.products[this.pproduct_id-1].product
                 // this.producto = this.$refs.producto.value
-                let quantity = this.pquantity
-                let purchase_price = this.ppurchase_price
-                let sale_price = this.psale_price
+                this.iquantity.push(this.pquantity)
+                this.ipurchase_price.push(this.ppurchase_price)
+                this.isale_price.push(this.psale_price)
 
+                // let product_id = this.pproduct_id
+                // if(!this.products[product_id-1].product){
+                //     this.errors = "¡Debe rellenar todos los campos!"
+                //     alert(this.errors)
+                // }
+                // this.producto = this.products[product_id-1].product
+                // // this.producto = this.$refs.producto.value
+                // let quantity = this.pquantity
+                // let purchase_price = this.ppurchase_price
+                // let sale_price = this.psale_price
 
-                if(product_id != '' && quantity != '' && quantity > 0 && purchase_price != '' && sale_price != ''){
-                    this.subtotal[this.cont] = (quantity * purchase_price)
+                if(this.iproduct_id != ''){
+                    this.subtotal[this.cont] = (this.iquantity * this.ipurchase_price)
                     this.total = this.total + this.subtotal[this.cont]
 
-                    var fila = `
-                        <tr class="selected" id="fila${this.cont}">
-                            <td>
-                                <button type="button" class="btn btn-danger" onclick="eliminar(${this.cont});">x</button>
-                            </td>
-                            <td>
-                                <input class="form-control" type="hidden" name="product_id[]" value="${product_id}">
-                                ${this.producto}
-                            </td>
-                            <td>
-                                <input class="form-control" type="number" name="quantity[]" value="${quantity}">
-                            </td>
-                            <td>
-                                <input class="form-control" type="number" name="purchase_price[]" value="${purchase_price}">
-                            </td>
-                            <td>
-                                <input class="form-control" type="number" name="sale_price[]" value="${sale_price}">
-                            </td>
-                            <td>
-                                ${this.subtotal[this.cont]}
-                            </td>
-                        </tr>
-                    `
+                    this.quantity.push[this.iquantity]
+
+                    // var fila = ``
                     this.cont++
+
+                    console.log(this.iquantity)
                     var t = document.getElementById("total");
                     t.innerHTML = this.total;
-                    this.limpiar()
-                    console.log(fila)
-                    var tabla = document.getElementById("details");
-                    tabla.insertRow(-1).innerHTML = fila;
+                    // this.limpiar()
+                    // console.log(fila)
+                    // var tabla = document.getElementById("details");
+                    // tabla.insertRow(-1).innerHTML = fila;
                 }else{
                     this.errors = "¡Debe rellenar todos los campos!"
                 }
+
+
+                // if(product_id != '' && quantity != '' && quantity > 0 && purchase_price != '' && sale_price != ''){
+                //     this.subtotal[this.cont] = (quantity * purchase_price)
+                //     this.total = this.total + this.subtotal[this.cont]
+
+                //     var fila = `
+                //         <tr class="selected" id="fila${this.cont}">
+                //             <td>
+                //                 <button type="button" class="btn btn-danger" onclick="eliminar(${this.cont});">x</button>
+                //             </td>
+                //             <td>
+                //                 <input class="form-control" type="hidden" name="iproduct_id" value="${product_id}">
+                //                 ${this.producto}
+                //             </td>
+                //             <td>
+                //                 <input class="form-control" type="number" v-model="iquantity[]" value="${quantity}">
+                //             </td>
+                //             <td>
+                //                 <input class="form-control" type="number" name="ipurchase_price" value="${purchase_price}">
+                //             </td>
+                //             <td>
+                //                 <input class="form-control" type="number" name="isale_price" value="${sale_price}">
+                //             </td>
+                //             <td>
+                //                 ${this.subtotal[this.cont]}
+                //             </td>
+                //         </tr>
+                //     `
+                //     this.cont++
+                //     var t = document.getElementById("total");
+                //     t.innerHTML = this.total;
+                //     this.limpiar()
+                //     console.log(fila)
+                //     var tabla = document.getElementById("details");
+                //     tabla.insertRow(-1).innerHTML = fila;
+                // }else{
+                //     this.errors = "¡Debe rellenar todos los campos!"
+                // }
             },
             eliminar(index){
                 this.total = this.total - this.subtotal[index];
@@ -247,41 +315,41 @@
                 })
             },
             async create(){
+                // for (let i = 0; i < this.cont; i++) {
+                //     this.iproduct_id.push(document.getElementsByName("iproduct_id")[i].value);
+                //     this.iquantity.push(JSON.parse(document.getElementsByName("iquantity")[i].value));
+                //     this.ipurchase_price.push(document.getElementsByName("ipurchase_price")[i].value);
+                //     this.isale_price.push(document.getElementsByName("isale_price")[i].value);
+                // }
+                console.log(this.iproduct_id)
+                console.log(this.iquantity)
+                console.log(this.ipurchase_price)
+                console.log(this.isale_price)
+                
                 let formData = new FormData();
-                formData.append('name', this.user.name)
-                formData.append('email', this.user.email)
-                formData.append('password', this.user.password)
-                formData.append('current_password', this.user.current_password)
-                formData.append('document', this.user.document)
-                formData.append('n_document', this.user.n_document)
-                formData.append('location', this.user.location)
-                formData.append('phone', this.user.phone)
-                formData.append('status', this.user.status)
-                formData.append('role', this.user.role)
-                formData.append('img_path', this.user.img_path)
+                formData.append('user_id', this.user_id)
+                formData.append('t_comprobante', this.t_comprobante)
+                formData.append('s_comprobante', this.s_comprobante)
+                formData.append('n_comprobante', this.n_comprobante)
+                formData.append('producto_id', this.iproduct_id)
+                formData.append('quantity', this.iquantity)
+                formData.append('purchase_price', this.ipurchase_price)
+                formData.append('sale_price', this.isale_price)
                 console.log(formData)
-                console.log(this.user)
-                if(this.user.password == this.user.current_password){
-                    await this.axios.post('/api/supplier', formData)
-                    .then(response=>{
-                        console.log(response.data)
-                        this.$router.push({name:"showSupplier"})
-                    })
-                    .catch(error=>{
-                        console.log(error)
-                    })
-                }else{
-                    this.message = "Las contraseñas ingresadas no coinciden"
-                    this.user.password = '';
-                    this.user.current_password = '';
-                    return this.message;
-                }
+                await this.axios.post('/api/income', formData)
+                .then(response=>{
+                    console.log(response.data)
+                    this.$router.push({name:"indexIncome"})
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
             },
         },
         computed:{
             imagen(){
                 return this.imgThumb;
-            }
+            },
         }
     }
 </script>

@@ -2225,6 +2225,24 @@ var ROUTES = [{
   component: function component() {
     return __webpack_require__.e(/*! import() */ "resources_js_components_shopping_income_Show_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/shopping/income/Show.vue */ "./resources/js/components/shopping/income/Show.vue"));
   }
+}, {
+  name: 'indexCustomer',
+  path: '/customer',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_components_sales_customer_Index_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/sales/customer/Index.vue */ "./resources/js/components/sales/customer/Index.vue"));
+  }
+}, {
+  name: 'createCustomer',
+  path: '/customer/create',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_components_sales_customer_Create_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/sales/customer/Create.vue */ "./resources/js/components/sales/customer/Create.vue"));
+  }
+}, {
+  name: 'editCustomer',
+  path: '/customer/edit/:id',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_components_sales_customer_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/sales/customer/Edit.vue */ "./resources/js/components/sales/customer/Edit.vue"));
+  }
 }];
 
 /***/ }),
@@ -19873,6 +19891,67 @@ var render = function () {
                     ]
                   ),
                 ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "nav-item dropdown" }, [
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    {
+                      staticClass: "dropdown-menu",
+                      attrs: { "aria-labelledby": "navbarDropdown" },
+                    },
+                    [
+                      _c(
+                        "li",
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "dropdown-item",
+                              attrs: {
+                                "exact-active-class": "active",
+                                to: "/income",
+                                "aria-current": "page",
+                              },
+                            },
+                            [
+                              _c("i", { staticClass: "fas fa-dolly-flatbed" }),
+                              _vm._v(
+                                " Venta\n                                "
+                              ),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "li",
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "dropdown-item",
+                              attrs: {
+                                "exact-active-class": "active",
+                                to: "/customer",
+                                "aria-current": "page",
+                              },
+                            },
+                            [
+                              _c("i", { staticClass: "fas fa-user-plus" }),
+                              _vm._v(
+                                " Cliente\n                                "
+                              ),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                    ]
+                  ),
+                ]),
               ]),
             ]
           ),
@@ -19953,6 +20032,28 @@ var staticRenderFns = [
       [
         _c("i", { staticClass: "fas fa-dolly-flatbed" }),
         _vm._v(" Compras\n                        "),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "nav-link dropdown-toggle",
+        attrs: {
+          href: "#",
+          id: "navbarDropdown",
+          role: "button",
+          "data-bs-toggle": "dropdown",
+          "aria-expanded": "false",
+        },
+      },
+      [
+        _c("i", { staticClass: "fas fa-dolly-flatbed" }),
+        _vm._v(" Ventas\n                        "),
       ]
     )
   },
@@ -35410,7 +35511,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_store_product_Index_vue":1,"resources_js_components_store_category_Index_vue":1,"resources_js_components_store_category_Create_vue":1,"resources_js_components_store_category_Edit_vue":1,"resources_js_components_store_product_Create_vue":1,"resources_js_components_store_product_Edit_vue":1,"resources_js_components_shopping_supplier_Index_vue":1,"resources_js_components_shopping_supplier_Create_vue":1,"resources_js_components_shopping_supplier_Edit_vue":1,"resources_js_components_shopping_income_Index_vue":1,"resources_js_components_shopping_income_Create_vue":1,"resources_js_components_shopping_income_Edit_vue":1,"resources_js_components_shopping_income_Show_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_store_product_Index_vue":1,"resources_js_components_store_category_Index_vue":1,"resources_js_components_store_category_Create_vue":1,"resources_js_components_store_category_Edit_vue":1,"resources_js_components_store_product_Create_vue":1,"resources_js_components_store_product_Edit_vue":1,"resources_js_components_shopping_supplier_Index_vue":1,"resources_js_components_shopping_supplier_Create_vue":1,"resources_js_components_shopping_supplier_Edit_vue":1,"resources_js_components_shopping_income_Index_vue":1,"resources_js_components_shopping_income_Create_vue":1,"resources_js_components_shopping_income_Edit_vue":1,"resources_js_components_shopping_income_Show_vue":1,"resources_js_components_sales_customer_Index_vue":1,"resources_js_components_sales_customer_Create_vue":1,"resources_js_components_sales_customer_Edit_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

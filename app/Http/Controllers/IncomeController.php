@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\IncomeFormRequest;
 use App\Models\Income;
 use App\Models\IncomeDetail;
+use App\Models\Product;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class IncomeController extends Controller
 {
@@ -58,7 +60,9 @@ class IncomeController extends Controller
      */
     public function store(IncomeFormRequest $request)
     {
-        try {
+        return "store";
+        dd($request->all());
+        // try {
             DB::beginTransaction();
 
             $income = new Income();
@@ -86,6 +90,7 @@ class IncomeController extends Controller
                 $income_detail->income_id = $income->id;
                 $income_detail->product_id = $product_id[$cont];
                 $income_detail->quantity = $quantity[$cont];
+                Product::findOrFail($product_id[$cont])->update(['quantity' => Product::findOrFail($product_id[$cont])->quantity + $quantity[$cont]]);
                 $income_detail->purchase_price = $purchase_price[$cont];
                 $income_detail->sale_price = $sale_price[$cont];
                 $income_detail->save();
@@ -95,13 +100,18 @@ class IncomeController extends Controller
 
             DB::commit();
 
-        } catch (\Throwable $th) {
-            DB::rollback();
-        }
+            return response()->json([
+                'message' => '¡Ingreso creado satisfactoriamente!'
+            ]);
+        // } catch (Throwable $th) {
+        //     DB::rollback();
+        //     return response()->json([
+        //         'message' => '¡Ingreso NO fue creado!',
+        //         'error' => $th
+        //     ]);
+        // }
 
-        return response()->json([
-            'message' => '¡Ingreso creado satisfactoriamente!'
-        ]);
+        
     }
 
     /**

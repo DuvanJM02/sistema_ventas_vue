@@ -65,7 +65,7 @@ class ProductController extends Controller
      */
     public function store(ProductFormRequest $request)
     {
-
+        Cache::forget('products');
         $product = new Product();
 
         $product->code = $request->code;
@@ -122,7 +122,7 @@ class ProductController extends Controller
 
     public function update(ProductFormRequest $request, $id)
     {
-
+        Cache::forget('products');
         // if($request->hasFile('file')){
         //     dd($request->img_path);
         //     return "Si hay imagen";

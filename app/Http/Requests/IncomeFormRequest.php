@@ -27,9 +27,6 @@ class IncomeFormRequest extends FormRequest
             't_comprobante' => 'required',
             's_comprobante' => 'required',
             'n_comprobante' => 'required',
-            'date' => 'required',
-            'tax' => 'required',
-            'status' => 'required',
             'user_id' => 'required',
         ];
     }

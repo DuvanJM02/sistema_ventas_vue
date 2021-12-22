@@ -73,4 +73,19 @@ export const ROUTES = [
         path: '/income/:id',
         component: ()=> import('./components/shopping/income/Show.vue'),
     },
+    {
+        name: 'indexCustomer',
+        path: '/customer',
+        component: ()=> import('./components/sales/customer/Index.vue'),
+    },
+    { 
+        name: 'createCustomer',
+        path: '/customer/create',
+        component: ()=> import('./components/sales/customer/Create.vue') 
+    },
+    {
+        name: 'editCustomer',
+        path: '/customer/edit/:id',
+        component: ()=> import('./components/sales/customer/Edit.vue')
+    },
 ];

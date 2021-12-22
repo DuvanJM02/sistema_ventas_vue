@@ -53,6 +53,23 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-dolly-flatbed"></i> Ventas
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <router-link exact-active-class="active" to="/income" class="dropdown-item" aria-current="page">
+                                        <i class="fas fa-dolly-flatbed"></i> Venta
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link exact-active-class="active" to="/customer" class="dropdown-item" aria-current="page">
+                                        <i class="fas fa-user-plus"></i> Cliente
+                                    </router-link>
+                                </li>
+                            </ul>
+                        </li>
                         <!-- <li class="nav-item">
                             <router-link exact-active-class="active" to="/category" class="nav-link" aria-current="page">
                                 Categorias
