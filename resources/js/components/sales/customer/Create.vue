@@ -91,7 +91,7 @@
                     location: null,
                     phone: null,
                     img_path: null,
-                    role: 'supplier',
+                    role: 'customer',
                     status: 1,
                 },
                 imgThumb: null,
@@ -140,10 +140,10 @@
                 console.log(formData)
                 console.log(this.user)
                 if(this.user.password == this.user.current_password){
-                    await this.axios.post('/api/supplier', formData)
+                    await this.axios.post('/api/customer', formData)
                     .then(response=>{
                         console.log(response.data)
-                        this.$router.push({name:"indexSupplier"})
+                        this.$router.push({name:"indexCustomer"})
                     })
                     .catch(error=>{
                         console.log(error)

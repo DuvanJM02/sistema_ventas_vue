@@ -43,28 +43,28 @@ class CustomerController extends Controller
      */
     public function store(UserFormRequest $request)
     {
-        $supplier = new User();
+        $customer = new User();
 
-        $supplier->name = $request->name;
-        $supplier->email = $request->email;
-        $supplier->password = bcrypt($request->password);
-        $supplier->role = $request->role;
-        $supplier->document = $request->document;
-        $supplier->n_document = $request->n_document;
-        $supplier->location = $request->location;
-        $supplier->phone = $request->phone;
-        $supplier->status = $request->status;
+        $customer->name = $request->name;
+        $customer->email = $request->email;
+        $customer->password = bcrypt($request->password);
+        $customer->role = $request->role;
+        $customer->document = $request->document;
+        $customer->n_document = $request->n_document;
+        $customer->location = $request->location;
+        $customer->phone = $request->phone;
+        $customer->status = $request->status;
 
         if ($request->img_path) {
             $image = $request->file('img_path');
             $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
             $request->img_path->move(public_path() . '/img/users/', $namePhoto);
-            $supplier->img_path = $namePhoto;
+            $customer->img_path = $namePhoto;
         }
 
-        $supplier->save();
+        $customer->save();
 
-        return response()->json(['supplier' => $supplier]);
+        return response()->json(['customer' => $customer]);
     }
 
     /**

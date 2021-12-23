@@ -122,7 +122,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         location: null,
         phone: null,
         img_path: null,
-        role: 'supplier',
+        role: 'customer',
         status: 1
       },
       imgThumb: null,
@@ -188,11 +188,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context.next = 17;
-                return _this2.axios.post('/api/supplier', formData).then(function (response) {
+                return _this2.axios.post('/api/customer', formData).then(function (response) {
                   console.log(response.data);
 
                   _this2.$router.push({
-                    name: "indexSupplier"
+                    name: "indexCustomer"
                   });
                 })["catch"](function (error) {
                   console.log(error);

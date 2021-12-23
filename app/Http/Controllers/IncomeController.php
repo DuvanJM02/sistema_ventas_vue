@@ -60,7 +60,6 @@ class IncomeController extends Controller
      */
     public function store(IncomeFormRequest $request)
     {
-        return "store";
         dd($request->all());
         // try {
             DB::beginTransaction();

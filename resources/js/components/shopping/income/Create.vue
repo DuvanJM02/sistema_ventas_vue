@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5">
-        <form action="api/income-store" method="GET">
+        <form @submit.prevent="create" method="POST">
             <input type="hidden" name="_token" :value="csrf">
             <div class="row">
                 <div class="col-lg-12">
@@ -94,7 +94,7 @@
                                             <th><h4>$ <span id="total">. 0</span></h4></th>
                                         </tfoot>
                                         <tbody v-if="iquantity != ''">
-                                            <tr class="selected" id="cont">
+                                            <!-- <tr class="selected" id="cont">
                                                 <td>
                                                     <button type="button" class="btn btn-danger" onclick="">x</button>
                                                 </td>
@@ -114,7 +114,7 @@
                                                 <td>
                                                     {{subtotal}}
                                                 </td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -211,86 +211,86 @@
             // },
             agregar(){
 
-                this.iproduct_id.push(this.pproduct_id)
-                if(!this.products[this.pproduct_id-1].product){
-                    this.errors = "¡Debe rellenar todos los campos!"
-                    alert(this.errors)
-                }
-                this.producto = this.products[this.pproduct_id-1].product
-                // this.producto = this.$refs.producto.value
-                this.iquantity.push(this.pquantity)
-                this.ipurchase_price.push(this.ppurchase_price)
-                this.isale_price.push(this.psale_price)
-
-                // let product_id = this.pproduct_id
-                // if(!this.products[product_id-1].product){
+                // this.iproduct_id.push(this.pproduct_id)
+                // if(!this.products[this.pproduct_id-1].product){
                 //     this.errors = "¡Debe rellenar todos los campos!"
                 //     alert(this.errors)
                 // }
-                // this.producto = this.products[product_id-1].product
+                // this.producto = this.products[this.pproduct_id-1].product
                 // // this.producto = this.$refs.producto.value
-                // let quantity = this.pquantity
-                // let purchase_price = this.ppurchase_price
-                // let sale_price = this.psale_price
+                // this.iquantity.push(this.pquantity)
+                // this.ipurchase_price.push(this.ppurchase_price)
+                // this.isale_price.push(this.psale_price)
 
-                if(this.iproduct_id != ''){
-                    this.subtotal[this.cont] = (this.iquantity * this.ipurchase_price)
-                    this.total = this.total + this.subtotal[this.cont]
-
-                    this.quantity.push[this.iquantity]
-
-                    // var fila = ``
-                    this.cont++
-
-                    console.log(this.iquantity)
-                    var t = document.getElementById("total");
-                    t.innerHTML = this.total;
-                    // this.limpiar()
-                    // console.log(fila)
-                    // var tabla = document.getElementById("details");
-                    // tabla.insertRow(-1).innerHTML = fila;
-                }else{
+                let product_id = this.pproduct_id
+                if(!this.products[product_id-1].product){
                     this.errors = "¡Debe rellenar todos los campos!"
+                    alert(this.errors)
                 }
+                this.producto = this.products[product_id-1].product
+                // this.producto = this.$refs.producto.value
+                let quantity = this.pquantity
+                let purchase_price = this.ppurchase_price
+                let sale_price = this.psale_price
 
-
-                // if(product_id != '' && quantity != '' && quantity > 0 && purchase_price != '' && sale_price != ''){
-                //     this.subtotal[this.cont] = (quantity * purchase_price)
+                // if(this.iproduct_id != ''){
+                //     this.subtotal[this.cont] = (this.iquantity * this.ipurchase_price)
                 //     this.total = this.total + this.subtotal[this.cont]
 
-                //     var fila = `
-                //         <tr class="selected" id="fila${this.cont}">
-                //             <td>
-                //                 <button type="button" class="btn btn-danger" onclick="eliminar(${this.cont});">x</button>
-                //             </td>
-                //             <td>
-                //                 <input class="form-control" type="hidden" name="iproduct_id" value="${product_id}">
-                //                 ${this.producto}
-                //             </td>
-                //             <td>
-                //                 <input class="form-control" type="number" v-model="iquantity[]" value="${quantity}">
-                //             </td>
-                //             <td>
-                //                 <input class="form-control" type="number" name="ipurchase_price" value="${purchase_price}">
-                //             </td>
-                //             <td>
-                //                 <input class="form-control" type="number" name="isale_price" value="${sale_price}">
-                //             </td>
-                //             <td>
-                //                 ${this.subtotal[this.cont]}
-                //             </td>
-                //         </tr>
-                //     `
+                //     this.quantity.push[this.iquantity]
+
+                //     // var fila = ``
                 //     this.cont++
+
+                //     console.log(this.iquantity)
                 //     var t = document.getElementById("total");
                 //     t.innerHTML = this.total;
-                //     this.limpiar()
-                //     console.log(fila)
-                //     var tabla = document.getElementById("details");
-                //     tabla.insertRow(-1).innerHTML = fila;
+                //     // this.limpiar()
+                //     // console.log(fila)
+                //     // var tabla = document.getElementById("details");
+                //     // tabla.insertRow(-1).innerHTML = fila;
                 // }else{
                 //     this.errors = "¡Debe rellenar todos los campos!"
                 // }
+
+
+                if(product_id != '' && quantity != '' && quantity > 0 && purchase_price != '' && sale_price != ''){
+                    this.subtotal[this.cont] = (quantity * purchase_price)
+                    this.total = this.total + this.subtotal[this.cont]
+
+                    var fila = `
+                        <tr class="selected" id="fila${this.cont}">
+                            <td>
+                                <button type="button" class="btn btn-danger" onclick="eliminar(${this.cont});">x</button>
+                            </td>
+                            <td>
+                                <input class="form-control" type="hidden" name="iproduct_id" value="${product_id}">
+                                ${this.producto}
+                            </td>
+                            <td>
+                                <input class="form-control" type="number" name="iquantity" value="${quantity}">
+                            </td>
+                            <td>
+                                <input class="form-control" type="number" name="ipurchase_price" value="${purchase_price}">
+                            </td>
+                            <td>
+                                <input class="form-control" type="number" name="isale_price" value="${sale_price}">
+                            </td>
+                            <td>
+                                ${this.subtotal[this.cont]}
+                            </td>
+                        </tr>
+                    `
+                    this.cont++
+                    var t = document.getElementById("total");
+                    t.innerHTML = this.total;
+                    this.limpiar()
+                    console.log(fila)
+                    var tabla = document.getElementById("details");
+                    tabla.insertRow(-1).innerHTML = fila;
+                }else{
+                    this.errors = "¡Debe rellenar todos los campos!"
+                }
             },
             eliminar(index){
                 this.total = this.total - this.subtotal[index];
@@ -315,12 +315,12 @@
                 })
             },
             async create(){
-                // for (let i = 0; i < this.cont; i++) {
-                //     this.iproduct_id.push(document.getElementsByName("iproduct_id")[i].value);
-                //     this.iquantity.push(JSON.parse(document.getElementsByName("iquantity")[i].value));
-                //     this.ipurchase_price.push(document.getElementsByName("ipurchase_price")[i].value);
-                //     this.isale_price.push(document.getElementsByName("isale_price")[i].value);
-                // }
+                for (let i = 0; i < this.cont; i++) {
+                    this.iproduct_id.push(document.getElementsByName("iproduct_id")[i].value);
+                    this.iquantity.push(document.getElementsByName("iquantity")[i].value);
+                    this.ipurchase_price.push(document.getElementsByName("ipurchase_price")[i].value);
+                    this.isale_price.push(document.getElementsByName("isale_price")[i].value);
+                }
                 console.log(this.iproduct_id)
                 console.log(this.iquantity)
                 console.log(this.ipurchase_price)
