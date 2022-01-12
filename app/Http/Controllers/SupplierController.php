@@ -46,7 +46,7 @@ class SupplierController extends Controller
         $supplier = new User();
 
         $supplier->name = $request->name;
-        $supplier->email = $request->email;
+        $supplier->email = $request->email; 
         $supplier->password = bcrypt($request->password);
         $supplier->role = $request->role;
         $supplier->document = $request->document;
@@ -55,7 +55,7 @@ class SupplierController extends Controller
         $supplier->phone = $request->phone;
         $supplier->status = $request->status;
 
-        if ($request->img_path) {
+        if ($request->img_path != "null") {
             $image = $request->file('img_path');
             $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
             $request->img_path->move(public_path() . '/img/users/', $namePhoto);
@@ -111,29 +111,37 @@ class SupplierController extends Controller
         $supplier->status = $request->status;
         $old_img = $supplier->img_path; 
 
-        try{
-            if ($request->img_path != $supplier->img_path) {
-                // unlink(public_path('/img/suppliers/' . $supplier->photo_path));
+        if($request->img_path != 'undefined' || $request->img_path != null){
+            try{
+                if ($request->img_path != $supplier->img_path && $request->img_path != null) {
+                    
+                    // unlink(public_path('/img/suppliers/' . $supplier->photo_path));
+                    if($request->img_path != null && $supplier->img_path != null){
+                        // dd($request->img_path);
+                        $img_path = public_path('img/users/'.$supplier->img_path);
+                        // return $img_path;
+                        if (File::exists($img_path)) {
+                            //File::delete($img_path);
+                            unlink($img_path);
+                        }
+                    }
 
-                $img_path = public_path('img/users/'.$supplier->img_path);
-
-                // return $img_path;
-                if (File::exists($img_path)) {
-                    //File::delete($img_path);
-                    unlink($img_path);
+                    $image = $request->file('img_path');
+                    $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
+                    $request->img_path->move(public_path() . '/img/users/', $namePhoto);
+                    $supplier->img_path = $namePhoto;
+                    $supplier->update();
                 }
-
-                $image = $request->file('img_path');
-                $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
-                $request->img_path->move(public_path() . '/img/users/', $namePhoto);
-                $supplier->img_path = $namePhoto;
+            }catch(Exception $e){
+                $supplier->img_path = $old_img;
                 $supplier->update();
+                return response()->json(['e' => $e]);
             }
-        }catch(Exception $e){
+        }else{
             $supplier->img_path = $old_img;
             $supplier->update();
-            return response()->json(['e' => $e]);
         }
+        
 
         return response()->json(['supplier' => $supplier]);
     }

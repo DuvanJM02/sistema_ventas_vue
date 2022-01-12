@@ -350,7 +350,8 @@ var render = function () {
                           staticClass: "inline",
                           attrs: {
                             href: "img/users/" + supplier.img_path,
-                            "data-lightbox": "image-1",
+                            "data-fancybox": supplier.name,
+                            "data-caption": supplier.name,
                           },
                         },
                         [
@@ -369,9 +370,7 @@ var render = function () {
                       _c("strong", [_vm._v(_vm._s(supplier.name))]),
                     ]),
                     _vm._v(" "),
-                    _c("td", { staticClass: "xd" }, [
-                      _vm._v(_vm._s(supplier.email)),
-                    ]),
+                    _c("td", [_vm._v(_vm._s(supplier.email))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(supplier.document))]),
                     _vm._v(" "),
@@ -538,7 +537,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Usuario")]),
         _vm._v(" "),
-        _c("th", { staticClass: "xd" }, [_vm._v("Correo")]),
+        _c("th", [_vm._v("Correo")]),
         _vm._v(" "),
         _c("th", [_vm._v("Documento")]),
         _vm._v(" "),

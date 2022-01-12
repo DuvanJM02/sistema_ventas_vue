@@ -18,6 +18,7 @@ class Income extends Model
         'n_comprobante',
         'date',
         'tax',
+        'total',
         'status',
         'user_id',
     ];

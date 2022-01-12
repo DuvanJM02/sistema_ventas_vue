@@ -20,7 +20,7 @@ class CreateSalesTable extends Migration
             $table->integer('n_comprobante');
             $table->date('date');
             $table->string('tax');
-            $table->double('sale_total');
+            $table->string('sale_total');
             $table->string('status');
 
             //clave foranea

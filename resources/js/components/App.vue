@@ -1,8 +1,8 @@
 <template>
     <main>
-        <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><i class="fas fa-store"></i></a>
+                <router-link to="/" class="navbar-brand"><i class="fas fa-store"></i></router-link>
                 <button
                     class="navbar-toggler"
                     type="button"
@@ -59,7 +59,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <router-link exact-active-class="active" to="/income" class="dropdown-item" aria-current="page">
+                                    <router-link exact-active-class="active" to="/sale" class="dropdown-item" aria-current="page">
                                         <i class="fas fa-dolly-flatbed"></i> Venta
                                     </router-link>
                                 </li>
@@ -70,18 +70,24 @@
                                 </li>
                             </ul>
                         </li>
-                        <!-- <li class="nav-item">
-                            <router-link exact-active-class="active" to="/category" class="nav-link" aria-current="page">
-                                Categorias
-                            </router-link>
-                        </li> -->
                     </ul>
-                    <!-- <form class="d-flex" @submit.prevent="search">
-                        <input class="form-control me-2" type="search" v-model="search" placeholder="Search" aria-label="Search"/>
-                        <button class="btn btn-success" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </form> -->
+                    <form class="d-flex" action="/logout" method="post">
+                        <input type="hidden" name="_token" :value="csrf">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img v-if="authUser.img_path != null" class="rounded-circle" :src="'/img/users/' + authUser.img_path" v-bind:alt="authUser.name" width="35rem" height="35rem">
+                                &nbsp;&nbsp;&nbsp;
+                                {{ authUser.name }}
+                            </button>
+                            <ul class="dropdown-menu bg-danger" aria-labelledby="dropdownMenuButton1">
+                                <li>
+                                    <button class="dropdown-item" href="#" type="submit">
+                                        <i class="fas fa-sign-out-alt"></i>&nbsp;Cerrar sesión
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
                 </div>
             </div>
         </nav>
@@ -90,3 +96,33 @@
         </div>
     </main>
 </template>
+
+<script>
+    export default {
+        name: "app",
+        data(){
+            return{
+                csrf: null,
+                authUser: [],
+            }
+        },
+        created(){
+            this.getCsrf();
+            this.showUser();
+        },
+        methods:{
+            getCsrf(){
+                this.csrf = document.getElementsByTagName('meta').csrf.content;
+            },
+            async showUser(){
+                await this.axios.get('/showUser')
+                .then(response=>{
+                    this.authUser = response.data;
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
+            },
+        },
+    }
+</script>

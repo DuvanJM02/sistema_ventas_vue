@@ -10,11 +10,11 @@
                         <form @submit.prevent="create" method="POST">
                             <div class="form-group">
                                 <label for="name">Nombre</label>
-                                <input class="form-control" type="text" v-model="category.name" autofocus>
+                                <input class="form-control" type="text" v-model="category.name" required autofocus>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="description">Descripción</label>
-                                <input class="form-control" v-model="category.description">
+                                <input class="form-control" v-model="category.description" required>
                             </div>
                             <div class="form-group mt-3">
                                 <button type="submit" class="btn btn-success">Guardar</button>

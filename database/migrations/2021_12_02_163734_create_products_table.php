@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->integer('stock');
             $table->boolean('status');
-            $table->string('img_path', 2048);
+            $table->string('img_path', 2048)->nullable();
             
             //clave foranea
             $table->foreignId('category_id');

@@ -1,136 +1,128 @@
 <template>
-    <div class="container">
+    <div class="container mt-5">
         <div class="row">
-            <div class="col-lg-6 mb-4">
-                <h3 class="mt-5">Ingresos &nbsp;
-                    <router-link to="/supplier/create" class="btn btn-info">
-                        <i class="fas fa-plus"></i>
-                    </router-link>
-                </h3>
-                <form class="d-flex" @submit.prevent="searchItem">
-                    <input class="form-control me-2" type="search" v-model="search" placeholder="Search" aria-label="Search" @keyup="searchItem">
-                    <button class="btn btn-success" type="submit">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </form>
-            </div>
-            <div class="col-12">
-                <div class="table-responsive">
-                    <table class="table table-light table-striped align-middle">
-                        <thead class="table-bordered">
-                            <tr>
-                                <th>Id</th>
-                                <th>Usuario</th>
-                                <th class="xd">Correo</th>
-                                <th>Documento</th>
-                                <th>N° Documento</th>
-                                <th>Ubicación</th>
-                                <th>Teléfono</th>
-                                <th>Estado</th>
-                                <th>Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="supplier in suppliers" :key="supplier.id">
-                                <td>{{ supplier.id }}</td>
-                                <td>
-                                    <a class="inline" :href="'img/users/' + supplier.img_path" data-lightbox="image-1" >
-                                        <img class="rounded-circle" :src="'img/users/' + supplier.img_path" v-bind:alt="supplier.name" width="40rem" height="40rem">    
-                                    </a>
-                                    <strong>{{ supplier.name }}</strong>
-                                </td>
-                                <td class="xd">{{ supplier.email }}</td>
-                                <td>{{ supplier.document }}</td>
-                                <td>{{ supplier.n_document }}</td>
-                                <td>{{ supplier.location }}</td>
-                                <td>{{ supplier.phone }}</td>
-                                <td>{{ supplier.status }}</td>
-                                <!-- <td>
-                                    <div class="text-center">
-                                        <a :href="'img/products/' + product.img_path" data-lightbox="image-1" >
-                                            <img :src="'img/products/' + product.img_path" v-bind:alt="product.name" width="100rem" height="100rem">    
-                                        </a>
-                                    </div>
-                                </td> -->
-                                <td class="text-center">
-                                    <router-link :to='{name:"editSupplier", params:{id:supplier.id}}' class="btn btn-warning">
-                                        <i class="fas fa-edit"></i>
-                                    </router-link>
-                                    <div class="d-inline" v-if="supplier.status">
-                                        <a class="btn btn-danger" type="button" @click="deleteSupplier(supplier.id)" >
-                                            <i class="fas fa-eye-slash"></i>
-                                        </a>
-                                    </div>
-                                    <div class="d-inline" v-if="!supplier.status">
-                                        <a class="btn btn-success" type="button" @click="activateSupplier(supplier.id)" >
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>
+                            <a @click="$router.go(-1)">
+                                <i class="fas fa-arrow-left"></i>
+                            </a> &nbsp;
+                            Comprobante de ingreso N° {{ income.n_comprobante }}
+                            <span class="float-end mr-3">
+                                <a :href="income_print + '/' + income.id" class="btn btn-warning" target="_blank">
+                                    <i class="fas fa-print"></i>
+                                </a>
+                            </span>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <strong>Id:</strong>
+                                <p>{{ income.id }}</p>
+                            </div>
+                            <div class="col-lg-3">
+                                <strong>Fecha:</strong>
+                                <p>
+                                    <time :datetime="income.date">{{ income.date }}</time>
+                                </p>
+                            </div>
+                            <div class="col-lg-3">
+                                <strong>Nombre del proveedor:</strong>
+                                <p>{{ income.name }}</p>
+                            </div>
+                            <div class="col-lg-3">
+                                <strong>Impuesto:</strong>
+                                <p>{{ income.tax }}%</p>
+                            </div>
+                            <div class="col-lg-4">
+                                <strong>Tipo de comprobante:</strong>
+                                <p>{{ income.t_comprobante }}</p>
+                            </div>
+                            <div class="col-lg-4">
+                                <strong>Serie:</strong>
+                                <p>{{ income.s_comprobante }}</p>
+                            </div>
+                            <div class="col-lg-4">
+                                <strong>Número de comprobante:</strong>
+                                <p>{{ income.n_comprobante }}</p>
+                            </div>
+                            <div class="form-group mt-3">
+                            </div>
+                            <div class="form-group">
+                                <table id="details" class="table table-striped table-bordered table-condensed table-hover">
+                                    <thead style="background: cadetblue;">
+                                        <th>Producto</th>
+                                        <th>Cantidad <abbr title="Unidades">(Unds)</abbr></th>
+                                        <th>Precio compra <abbr title="Peso Colombiano">(COP)</abbr></th>
+                                        <th>Precio venta <abbr title="Peso Colombiano">(COP)</abbr></th>
+                                        <th>Subtotal <abbr title="Peso Colombiano">(COP)</abbr></th>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="detail in details" :key="detail.id">
+                                            <td>{{ detail.product }}</td>
+                                            <td>{{ detail.quantity }}</td>
+                                            <td>${{ detail.purchase_price }}</td>
+                                            <td>${{ detail.sale_price }}</td>
+                                            <td>${{ detail.quantity * detail.purchase_price }}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot style="border: 1px solid cadetblue">
+                                        <th><strong>TOTAL</strong></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>
+                                            <h4>$
+                                                <span>{{ total }}</span>
+                                                <abbr title="Peso Colombiano">COP</abbr>
+                                            </h4>
+                                        </th>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="col-12 text-center">
+                                <a :href="income_print + '/' + income.id" class="btn btn-warning" target="_blank"><i class="fas fa-print"></i> Imprimir</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>
 </template>
 
 <script>
-// import { defineComponent } from '@vue/composition-api'
-
 export default{
-    name: "suppliers",
-    data(){
-        return{
-            suppliers:[],
-            search: "",
-            setTimeoutSearch: ''
-        }
-    },
-    created(){
-        this.showSuppliers()
-    },
-    methods:{
-        showSuppliers(){
-             this.axios.get('/api/supplier', {
-                 params:{
-                     search: this.search
-                 }
-             })
-            .then(response=>{
-                this.suppliers = response.data
-            })
-            .catch(error=>{
-                console.log(error)
-            })
-        },
-        searchItem(){
-            clearTimeout(this.setTimeoutSearch)
-            this.setTimeoutSearch = setTimeout(this.showSuppliers, 360)
-        },
-        deleteSupplier(id){
-            if(confirm('¿Desea borrar el registro?')){
-                this.axios.delete(`/api/supplier/${id}`)
-                .then(response=>{
-                    this.showSuppliers()
-                })
-                .catch(error=>{
-                    console.log(error) 
-                })
-            } 
-        },
-        activateSupplier(id){
-            if(confirm('¿Desea activar el registro?')){
-                this.axios.post(`/api/supplier/activate/${id}`)
-                .then(response=>{
-                    this.showSuppliers()
-                })
-                .catch(error=>{
-                    console.log(error)
-                })
+        name: "showIncome",
+        data(){
+            return{
+                income: [],
+                details: [],
+                total: 0,
+                income_print: null,
+                errors: []
             }
-        }
+        },
+        created(){
+            this.showData()
+            this.getIncomeStore()
+        },
+        methods:{
+            async showData(){
+                await this.axios.get(`/api/income/${this.$route.params.id}`)
+                .then(response=>{
+                    this.details = response.data.details
+                    this.income = response.data.income
+                    for(var i = 0; i < this.details.length; i++){
+                        this.total += this.details[i].quantity * this.details[i].purchase_price
+                    }
+                })
+            },
+            getIncomeStore(){
+                this.income_print = document.getElementsByTagName('meta').incomeprint.content;
+            },
+        },
     }
-}
 </script>

@@ -47,7 +47,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Usuario</th>
-                                <th class="xd">Correo</th>
+                                <th>Correo</th>
                                 <th>Documento</th>
                                 <th>N° Documento</th>
                                 <th>Ubicación</th>
@@ -60,12 +60,12 @@
                             <tr v-for="customer in customers" :key="customer.id">
                                 <td>{{ customer.id }}</td>
                                 <td>
-                                    <a class="inline" :href="'img/users/' + customer.img_path" data-lightbox="image-1" >
+                                    <a class="inline" :href="'img/users/' + customer.img_path" :data-fancybox="customer.name" :data-caption="customer.name">
                                         <img class="rounded-circle" :src="'img/users/' + customer.img_path" v-bind:alt="customer.name" width="40rem" height="40rem">    
                                     </a>
                                     <strong>{{ customer.name }}</strong>
                                 </td>
-                                <td class="xd">{{ customer.email }}</td>
+                                <td>{{ customer.email }}</td>
                                 <td>{{ customer.document }}</td>
                                 <td>{{ customer.n_document }}</td>
                                 <td>{{ customer.location }}</td>
@@ -79,7 +79,7 @@
                                     </div>
                                 </td> -->
                                 <td class="text-center">
-                                    <router-link :to='{name:"editcustomer", params:{id:customer.id}}' class="btn btn-warning">
+                                    <router-link :to='{name:"editCustomer", params:{id:customer.id}}' class="btn btn-warning">
                                         <i class="fas fa-edit"></i>
                                     </router-link>
                                     <div class="d-inline" v-if="customer.status">

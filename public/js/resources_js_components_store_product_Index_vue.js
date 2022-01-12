@@ -109,6 +109,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 // import { defineComponent } from '@vue/composition-api'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "products",
@@ -340,7 +343,11 @@ var render = function () {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(product.stock))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(product.status))]),
+                  _c("td", [
+                    product.status
+                      ? _c("span", [_vm._v("Activo")])
+                      : _c("span", [_vm._v("Inactivo")]),
+                  ]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(product.category))]),
                   _vm._v(" "),
@@ -351,7 +358,8 @@ var render = function () {
                         {
                           attrs: {
                             href: "img/products/" + product.img_path,
-                            "data-lightbox": "image-1",
+                            "data-fancybox": product.name,
+                            "data-caption": product.name,
                           },
                         },
                         [

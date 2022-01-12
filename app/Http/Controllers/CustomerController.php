@@ -43,6 +43,11 @@ class CustomerController extends Controller
      */
     public function store(UserFormRequest $request)
     {
+
+        $request->validate([
+            'img_path' => 'image|mimes:png,jpg,gif,tiff,jpeg,svg|max:2048',
+        ]);
+
         $customer = new User();
 
         $customer->name = $request->name;
@@ -98,44 +103,55 @@ class CustomerController extends Controller
      */
     public function update(UserFormRequest $request, $id)
     {
-        $supplier = User::findOrFail($id);
-
-        $supplier->name = $request->name;
-        $supplier->email = $request->email;
-        $supplier->password = bcrypt($request->password);
-        $supplier->role = $request->role;
-        $supplier->document = $request->document;
-        $supplier->n_document = $request->n_document;
-        $supplier->location = $request->location;
-        $supplier->phone = $request->phone;
-        $supplier->status = $request->status;
-        $old_img = $supplier->img_path; 
-
-        try{
-            if ($request->img_path != $supplier->img_path) {
-                // unlink(public_path('/img/suppliers/' . $supplier->photo_path));
-
-                $img_path = public_path('img/users/'.$supplier->img_path);
-
-                // return $img_path;
-                if (File::exists($img_path)) {
-                    //File::delete($img_path);
-                    unlink($img_path);
-                }
-
-                $image = $request->file('img_path');
-                $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
-                $request->img_path->move(public_path() . '/img/users/', $namePhoto);
-                $supplier->img_path = $namePhoto;
-                $supplier->update();
-            }
-        }catch(Exception $e){
-            $supplier->img_path = $old_img;
-            $supplier->update();
-            return response()->json(['e' => $e]);
+        if ($request->img_path == 'undefined'){ 
+            $request->img_path = null; 
         }
 
-        return response()->json(['supplier' => $supplier]);
+        $customer = User::findOrFail($id);
+
+        $customer->name = $request->name;
+        $customer->email = $request->email;
+        $customer->password = bcrypt($request->password);
+        $customer->role = $request->role;
+        $customer->document = $request->document;
+        $customer->n_document = $request->n_document;
+        $customer->location = $request->location;
+        $customer->phone = $request->phone;
+        $customer->status = $request->status;
+        $old_img = $customer->img_path; 
+
+        if($request->img_path != null){
+            try{
+                if ($request->img_path != $customer->img_path) {
+                    
+                    // unlink(public_path('/img/customers/' . $customer->photo_path));
+    
+                    if($customer->img_path != null){
+                        $img_path = public_path('img/users/' . $customer->img_path);
+                        // return $img_path;
+                        if (File::exists($img_path)) {
+                            //File::delete($img_path);
+                            unlink($img_path);
+                        }
+                    }
+    
+                    $image = $request->file('img_path');
+                    $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
+                    $request->img_path->move(public_path() . '/img/users/', $namePhoto);
+                    $customer->img_path = $namePhoto;
+                    $customer->update();
+                }
+            }catch(Exception $e){
+                $customer->img_path = $old_img;
+                $customer->update();
+                return response()->json(['e' => $e]);
+            }
+        }else{
+            $customer->img_path = $old_img;
+            $customer->update();
+        }
+
+        return response()->json(['customer' => $customer]);
     }
 
     /**

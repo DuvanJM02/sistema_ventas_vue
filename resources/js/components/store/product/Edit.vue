@@ -10,23 +10,23 @@
                         <form @submit.prevent="edit" enctype="multipart/formdata">
                             <div class="form-group">
                                 <label for="name">Código</label>
-                                <input class="form-control" type="text" v-model="product.code" autofocus>
+                                <input class="form-control" type="text" v-model="product.code" required autofocus>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="name">Nombre</label>
-                                <input class="form-control" type="text" v-model="product.name" autofocus>
+                                <input class="form-control" type="text" v-model="product.name" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="description">Descripción</label> 
-                                <input class="form-control" type="text" v-model="product.description">
+                                <input class="form-control" type="text" v-model="product.description" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="stock">Cantidad</label> 
-                                <input class="form-control" type="number" v-model="product.stock">
+                                <input class="form-control" type="number" v-model="product.stock" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="category">Categoría</label> 
-                                <select class="form-control w-100"  v-model="product.category_id">
+                                <select class="form-control w-100"  v-model="product.category_id" required>
                                     <option value="">Elige una opción</option>
 
                                     <option v-for="category in categories" :key="category.id" v-bind:value="category.id" :selected="product.category_id == category.id">{{ category.name }}</option>
@@ -47,10 +47,10 @@
                 <div class="card">
                     <div>
                         <div class="card-header">
-                            <h4>Imágen anterior: {{ product.name }}</h4>
+                            <h4>Imágen actual: {{ product.name }}</h4>
                         </div>
                         <div class="card-body">
-                            <a v-bind:href="'/img/products/' + product.img_path" data-lightbox="image-1" >
+                            <a v-bind:href="'/img/products/' + product.img_path" data-fancybox="image-1" data-caption="Imágen actual">
                                 <img :src="'/img/products/' + product.img_path" v-bind:alt="product.name" width="100%">
                             </a>
                         </div>
@@ -60,7 +60,7 @@
                             <h4>Imágen nueva</h4>
                         </div>
                         <div class="card-body">
-                            <a :href="imagen" data-lightbox="image-1" >
+                            <a :href="imagen" data-fancybox="image-1" data-caption="Imágen nueva">
                                 <img :src="imagen" alt="" width="100%">
                             </a>
                             
@@ -101,7 +101,6 @@ export default{
                 this.file = e.target.files[0];
                 this.product.img_path2 = this.file;
                 this.uploadImg(this.file);
-                console.log(this.product.img_path2)
             },
             uploadImg(file){
                 let reader = new FileReader()
@@ -126,15 +125,12 @@ export default{
                 formData.append('status', this.product.status)
                 formData.append('category_id', this.product.category_id)
                 formData.append('img_path', this.file)
-                console.log(formData)
-                console.log(this.product)
                 await this.axios.post('/api/product/' + this.$route.params.id, formData)
                 .then(response=>{
-                    console.log(response.data)
                     this.$router.push({name:"indexProduct"})
                 })
                 .catch(error=>{
-                     console.log(response)
+                    console.log(response)
                 })
             },
         },

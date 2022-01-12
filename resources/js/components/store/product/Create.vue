@@ -10,23 +10,23 @@
                         <form @submit.prevent="create" enctype="multipart/formdata">
                             <div class="form-group">
                                 <label for="name">Código</label>
-                                <input class="form-control" type="text" v-model="product.code" autofocus>
+                                <input class="form-control" type="text" v-model="product.code" required autofocus>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="name">Nombre</label>
-                                <input class="form-control" type="text" v-model="product.name" autofocus>
+                                <input class="form-control" type="text" v-model="product.name" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="description">Descripción</label> 
-                                <input class="form-control" type="text" v-model="product.description">
+                                <input class="form-control" type="text" v-model="product.description" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="stock">Cantidad</label> 
-                                <input class="form-control" type="number" v-model="product.stock">
+                                <input class="form-control" type="number" v-model="product.stock" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="category">Categoría</label> 
-                                <select class="form-control w-100"  v-model="product.category_id">
+                                <select class="form-control w-100"  v-model="product.category_id" required>
                                     <option value="">Elige una opción</option>
                                     <option v-for="category in categories" :key="category.id" v-bind:value="category.id">{{ category.name }}</option>
                                 </select>
@@ -81,7 +81,6 @@
         methods:{
             getImage(e){
                 let file = e.target.files[0];
-                console.log(file)
                 this.product.img_path = file;
                 this.uploadImg(file);
             },
@@ -95,7 +94,6 @@
             async showCategory(){
                 await this.axios.get('/api/product/create')
                 .then(response=>{
-                    console.log(response.data)
                     this.categories = response.data
                 })
                 .catch(error=>{
@@ -111,11 +109,8 @@
                 formData.append('status', this.product.status)
                 formData.append('category_id', this.product.category_id)
                 formData.append('img_path', this.product.img_path)
-                console.log(formData)
-                console.log(this.product)
                 await this.axios.post('/api/product', formData)
                 .then(response=>{
-                    console.log(response.data)
                     this.$router.push({name:"indexProduct"})
                 })
                 .catch(error=>{

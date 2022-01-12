@@ -12,6 +12,6 @@ class SaleDetail extends Model
     protected $table = 'sale_details';
     protected $primaryKey = "id";
 
-    protected $fillable = ['quantity', 'purchase_price', 'discount', 'sale_id', 'product_id'];
+    protected $fillable = ['quantity', 'sale_price', 'discount', 'sale_id', 'product_id'];
 }
  

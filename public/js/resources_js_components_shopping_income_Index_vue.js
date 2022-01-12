@@ -99,6 +99,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "income",
   data: function data() {
@@ -111,6 +123,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.showIncomes();
+    this.getIncomeStore();
   },
   methods: {
     showIncomes: function showIncomes() {
@@ -130,6 +143,9 @@ __webpack_require__.r(__webpack_exports__);
     searchItem: function searchItem() {
       clearTimeout(this.setTimeoutSearch);
       this.setTimeoutSearch = setTimeout(this.showIncomes, 360);
+    },
+    getIncomeStore: function getIncomeStore() {
+      this.income_print = document.getElementsByTagName('meta').incomeprint.content;
     },
     deleteIncome: function deleteIncome(id) {
       var _this2 = this;
@@ -325,23 +341,46 @@ var render = function () {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(income.name))]),
                     _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            attrs: {
+                              to: {
+                                name: "showIncome",
+                                params: { id: income.id },
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    " +
+                                _vm._s(
+                                  income.t_comprobante +
+                                    ": " +
+                                    income.s_comprobante +
+                                    "-" +
+                                    income.n_comprobante
+                                ) +
+                                "\n                                "
+                            ),
+                          ]
+                        ),
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(income.tax) + "%")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v("$" + _vm._s(income.total))]),
+                    _vm._v(" "),
                     _c("td", [
-                      _vm._v(
-                        _vm._s(
-                          income.t_comprobante +
-                            ": " +
-                            income.s_comprobante +
-                            "-" +
-                            income.n_comprobante
-                        )
-                      ),
+                      income.status == 1
+                        ? _c("span", [_vm._v("Activo")])
+                        : _c("span", [_vm._v("Inactivo")]),
                     ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(income.tax))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(income.total))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(income.status))]),
                     _vm._v(" "),
                     _c(
                       "td",
@@ -350,7 +389,7 @@ var render = function () {
                         _c(
                           "router-link",
                           {
-                            staticClass: "btn btn-warning",
+                            staticClass: "btn btn-sm btn-outline-secondary",
                             attrs: {
                               to: {
                                 name: "showIncome",
@@ -358,15 +397,29 @@ var render = function () {
                               },
                             },
                           },
-                          [_c("i", { staticClass: "fas fa-edit" })]
+                          [_c("i", { staticClass: "fas fa-scroll" })]
                         ),
                         _vm._v(" "),
-                        income.status
+                        _c("div", { staticClass: "d-inline" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "btn btn-sm btn-outline-dark",
+                              attrs: {
+                                href: _vm.income_print + "/" + income.id,
+                                target: "_blank",
+                              },
+                            },
+                            [_c("i", { staticClass: "fas fa-print" })]
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        income.status == 1
                           ? _c("div", { staticClass: "d-inline" }, [
                               _c(
                                 "a",
                                 {
-                                  staticClass: "btn btn-danger",
+                                  staticClass: "btn btn-sm btn-outline-success",
                                   attrs: { type: "button" },
                                   on: {
                                     click: function ($event) {
@@ -374,17 +427,14 @@ var render = function () {
                                     },
                                   },
                                 },
-                                [_c("i", { staticClass: "fas fa-eye-slash" })]
+                                [_c("i", { staticClass: "fas fa-toggle-on" })]
                               ),
                             ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        !income.status
-                          ? _c("div", { staticClass: "d-inline" }, [
+                          : _c("div", { staticClass: "d-inline" }, [
                               _c(
                                 "a",
                                 {
-                                  staticClass: "btn btn-success",
+                                  staticClass: "btn btn-sm btn-outline-danger",
                                   attrs: { type: "button" },
                                   on: {
                                     click: function ($event) {
@@ -392,10 +442,9 @@ var render = function () {
                                     },
                                   },
                                 },
-                                [_c("i", { staticClass: "fas fa-eye" })]
+                                [_c("i", { staticClass: "fas fa-toggle-off" })]
                               ),
-                            ])
-                          : _vm._e(),
+                            ]),
                       ],
                       1
                     ),

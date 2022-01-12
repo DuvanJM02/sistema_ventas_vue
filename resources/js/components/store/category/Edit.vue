@@ -14,14 +14,14 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="status">Estado</label>
-                                <select class="form-control" name="" id="" v-model="category.status">
+                                <select class="form-control" name="" id="" v-model="category.status" required>
                                     <option value="1">Activo</option>
                                     <option value="0">Inactivo</option>
                                 </select>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="description">Descripción</label>
-                                <input class="form-control" v-model="category.description">
+                                <input class="form-control" v-model="category.description" required>
                             </div>
                             <div class="form-group mt-3">
                                 <button type="submit" class="btn btn-success">Guardar</button>

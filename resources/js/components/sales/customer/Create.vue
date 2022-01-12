@@ -13,23 +13,23 @@
                         <form @submit.prevent="create" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="name">Nombre</label>
-                                <input class="form-control" type="text" v-model="user.name" autofocus>
+                                <input class="form-control" type="text" v-model="user.name" required autofocus>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="email">Correo electrónico</label>
-                                <input class="form-control" type="email" v-model="user.email">
+                                <input class="form-control" type="email" v-model="user.email" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="password">Contraseña</label>
-                                <input class="form-control" type="password" name="password" id="password" v-model="user.password">
+                                <input class="form-control" type="password" name="password" id="password" v-model="user.password" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="current-password">Confirmar contraseña</label>
-                                <input class="form-control" type="password" name="current-password" id="current-password" v-model="user.current_password">
+                                <input class="form-control" type="password" name="current-password" id="current-password" v-model="user.current_password" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="document">Tipo de documento</label>
-                                <select name="document" id="document" class="form-control" v-model="user.document">
+                                <select name="document" id="document" class="form-control" v-model="user.document" required>
                                     <option value="CC">Cédula de ciudadanía</option>
                                     <option value="TI">Tarjeta de identidad</option>
                                     <option value="CE">Cédula de extranjería</option>
@@ -39,15 +39,15 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="n_document">Número de documento</label>
-                                <input class="form-control" type="number" v-model="user.n_document">
+                                <input class="form-control" type="number" v-model="user.n_document" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="location">Ubicación</label>
-                                <input class="form-control" v-model="user.location">
+                                <input class="form-control" v-model="user.location" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="phone">Teléfono</label>
-                                <input class="form-control" type="tel" v-model="user.phone">
+                                <input class="form-control" type="tel" v-model="user.phone" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="img_path">Imágen</label>
@@ -66,7 +66,7 @@
                         <h4>{{ user.name }}</h4>
                     </div>
                     <div class="card-body d-flex justify-content-center">
-                        <a class="profile-photo" :href="imagen" data-lightbox='imagen'>
+                        <a class="profile-photo" :href="imagen" data-fancybox='imagen'>
                             <img :src="imagen" alt="" width="100%">
                         </a>
                     </div>
@@ -103,7 +103,6 @@
         methods:{
             getImage(e){
                 let file = e.target.files[0];
-                console.log(file)
                 this.user.img_path = file;
                 this.uploadImg(file);
             },
@@ -124,37 +123,35 @@
             //         console.log(error)
             //     })
             // },
-            async create(){
-                let formData = new FormData();
-                formData.append('name', this.user.name)
-                formData.append('email', this.user.email)
-                formData.append('password', this.user.password)
-                formData.append('current_password', this.user.current_password)
-                formData.append('document', this.user.document)
-                formData.append('n_document', this.user.n_document)
-                formData.append('location', this.user.location)
-                formData.append('phone', this.user.phone)
-                formData.append('status', this.user.status)
-                formData.append('role', this.user.role)
-                formData.append('img_path', this.user.img_path)
-                console.log(formData)
-                console.log(this.user)
-                if(this.user.password == this.user.current_password){
-                    await this.axios.post('/api/customer', formData)
-                    .then(response=>{
-                        console.log(response.data)
-                        this.$router.push({name:"indexCustomer"})
-                    })
-                    .catch(error=>{
-                        console.log(error)
-                    })
-                }else{
-                    this.message = "Las contraseñas ingresadas no coinciden"
-                    this.user.password = '';
-                    this.user.current_password = '';
-                    return this.message;
-                }
-            },
+            // async create(){
+            //     let formData = new FormData();
+            //     formData.append('name', this.user.name) 
+            //     formData.append('email', this.user.email)
+            //     formData.append('password', this.user.password)
+            //     formData.append('current_password', this.user.current_password)
+            //     formData.append('document', this.user.document)
+            //     formData.append('n_document', this.user.n_document)
+            //     formData.append('location', this.user.location)
+            //     formData.append('phone', this.user.phone)
+            //     formData.append('status', this.user.status)
+            //     formData.append('role', this.user.role)
+            //     formData.append('img_path', this.user.img_path)
+            //     if(this.user.password == this.user.current_password){
+            //         await this.axios.post('/api/customer', formData)
+            //         .then(response=>{
+            //              required(response.data)
+            //             this.$router.push({name:"indexCustomer"})
+            //         })
+            //         .catch(error=>{
+            //             console.log(error)
+            //         })
+            //     }else{
+            //         this.message = "Las contraseñas ingresadas no coinciden"
+            //         this.user.password = '';
+            //         this.user.current_password = '';
+            //         return this.message;
+            //     }
+            // },
         },
         computed:{
             imagen(){

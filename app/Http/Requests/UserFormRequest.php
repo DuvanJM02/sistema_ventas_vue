@@ -32,7 +32,6 @@ class UserFormRequest extends FormRequest
             'n_document' => 'required',
             'location' => 'required',
             'phone' => 'required',
-            'img_path' => 'image|mimes:png,jpg,gif,tiff,jpeg,svg|max:2048',
         ];
     }
 }

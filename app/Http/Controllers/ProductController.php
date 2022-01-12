@@ -11,25 +11,25 @@ use Illuminate\Support\Facades\DB;
 // use Faker\Core\File;
 use Illuminate\Support\Facades\File; 
 use Faker\Provider\File as ProviderFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // public function __construct()
+    // {
+    //     return response()->json(['authUser' => Auth::user()], 200);
+    // }
+    
     public function index(Request $request)
     {
+        $query = trim($request->get('search'));
         $cache_products = Cache::get('products');
-
-        if($cache_products){
+        if($cache_products && $query == null){
             $products = $cache_products;
             return response()->json($products);
         }else{
             if($request){
-                $query = trim($request->get('search'));
                 $products = DB::table('products as p')
                 ->join('categories as c', 'p.category_id', 'c.id')
                 ->select('p.id', 'p.code', 'p.name', 'p.description', 'p.stock', 'p.status', 'p.img_path', 'c.name as category')
@@ -38,7 +38,9 @@ class ProductController extends Controller
                 ->orderBy('p.id', 'desc')
                 ->get();
 
-                Cache::forever('products', $products);
+                if(!$query){
+                    Cache::put('products', $products, 10);
+                }
 
                 return response()->json($products);
             }
@@ -76,7 +78,10 @@ class ProductController extends Controller
         $product->category_id = $request->category_id;
 
 
-        if ($request->img_path) {
+        if ($request->img_path != null) {
+            $request->validate([
+                'img_path' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
             $image = $request->file('img_path');
             // $namePhoto = time() . '.' . $image->getClientOriginalExtension();
             $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
@@ -115,23 +120,9 @@ class ProductController extends Controller
         ]);
     }
 
-    // public function showCategories(){
-    //     $categories = Category::all()->where('status', '1');
-    //     return $categories;
-    // }
-
     public function update(ProductFormRequest $request, $id)
     {
         Cache::forget('products');
-        // if($request->hasFile('file')){
-        //     dd($request->img_path);
-        //     return "Si hay imagen";
-        // }else{
-        //     dd($request->img_path);
-        //     return "No hay imagen";
-        // }
-
-        // dd($request->img_path);
 
         $product = Product::findOrFail($id);
 
@@ -144,21 +135,26 @@ class ProductController extends Controller
         $old_img = $product->img_path;
 
         try{
-            if ($request->img_path != $product->img_path) {
+            if ($request->img_path != $product->img_path && $request->img_path != null) {
                 // unlink(public_path('/img/products/' . $product->photo_path));
 
-                $img_path = public_path('img/products/'.$product->img_path);
 
-                // return $img_path;
-                if (File::exists($img_path)) {
-                    //File::delete($img_path);
-                    unlink($img_path);
+                if($request->img_path != null){
+                    $img_path = public_path('img/products/'.$product->img_path);
+                    // return $img_path;
+                    if (File::exists($img_path)) {
+                        //File::delete($img_path);
+                        unlink($img_path);
+                    }
                 }
 
                 $image = $request->file('img_path');
                 $namePhoto = time() . '-' . $request->name . '.' . $image->getClientOriginalExtension();
                 $request->img_path->move(public_path() . '/img/products/', $namePhoto);
                 $product->img_path = $namePhoto;
+                $product->update();
+            }else{
+                $product->img_path = $old_img;
                 $product->update();
             }
         }catch(Exception $e){

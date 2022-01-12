@@ -350,7 +350,8 @@ var render = function () {
                           staticClass: "inline",
                           attrs: {
                             href: "img/users/" + customer.img_path,
-                            "data-lightbox": "image-1",
+                            "data-fancybox": customer.name,
+                            "data-caption": customer.name,
                           },
                         },
                         [
@@ -369,9 +370,7 @@ var render = function () {
                       _c("strong", [_vm._v(_vm._s(customer.name))]),
                     ]),
                     _vm._v(" "),
-                    _c("td", { staticClass: "xd" }, [
-                      _vm._v(_vm._s(customer.email)),
-                    ]),
+                    _c("td", [_vm._v(_vm._s(customer.email))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(customer.document))]),
                     _vm._v(" "),
@@ -393,7 +392,7 @@ var render = function () {
                             staticClass: "btn btn-warning",
                             attrs: {
                               to: {
-                                name: "editcustomer",
+                                name: "editCustomer",
                                 params: { id: customer.id },
                               },
                             },
@@ -538,7 +537,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Usuario")]),
         _vm._v(" "),
-        _c("th", { staticClass: "xd" }, [_vm._v("Correo")]),
+        _c("th", [_vm._v("Correo")]),
         _vm._v(" "),
         _c("th", [_vm._v("Documento")]),
         _vm._v(" "),

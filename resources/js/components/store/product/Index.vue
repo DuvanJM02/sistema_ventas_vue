@@ -63,11 +63,14 @@
                                 <td>{{ product.name }}</td>
                                 <td>{{ product.description }}</td>
                                 <td>{{ product.stock }}</td>
-                                <td>{{ product.status }}</td>
+                                <td>
+                                    <span v-if="product.status">Activo</span>
+                                    <span v-else>Inactivo</span>
+                                </td>
                                 <td>{{ product.category }}</td>
                                 <td>
                                     <div class="text-center">
-                                        <a :href="'img/products/' + product.img_path" data-lightbox="image-1" >
+                                        <a :href="'img/products/' + product.img_path" :data-fancybox="product.name" :data-caption="product.name">
                                             <img :src="'img/products/' + product.img_path" v-bind:alt="product.name" width="100rem" height="100rem">    
                                         </a>
                                     </div>

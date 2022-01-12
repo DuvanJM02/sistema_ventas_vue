@@ -10,11 +10,11 @@
                         <form @submit.prevent="edit" enctype="multipart/formdata">
                             <div class="form-group">
                                 <label for="name">Nombre</label>
-                                <input class="form-control" type="text" v-model="user.name" autofocus>
+                                <input class="form-control" type="text" v-model="user.name" required autofocus>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="email">Correo electrónico</label>
-                                <input class="form-control" type="email" v-model="user.email">
+                                <input class="form-control" type="email" v-model="user.email" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="password">Contraseña</label>
@@ -26,7 +26,7 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="document">Tipo de documento</label>
-                                <select name="document" id="document" class="form-control" v-model="user.document">
+                                <select name="document" id="document" class="form-control" v-model="user.document" required>
                                     <option value="CC">Cédula de ciudadanía</option>
                                     <option value="TI">Tarjeta de identidad</option>
                                     <option value="CE">Cédula de extranjería</option>
@@ -36,15 +36,15 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="n_document">Número de documento</label>
-                                <input class="form-control" type="number" v-model="user.n_document">
+                                <input class="form-control" type="number" v-model="user.n_document" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="location">Ubicación</label>
-                                <input class="form-control" v-model="user.location">
+                                <input class="form-control" v-model="user.location" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="phone">Teléfono</label>
-                                <input class="form-control" type="tel" v-model="user.phone">
+                                <input class="form-control" type="tel" v-model="user.phone" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="img_path">Imágen</label>
@@ -64,7 +64,7 @@
                             <h4>Imágen anterior: {{ user.name }}</h4>
                         </div>
                         <div class="card-body">
-                            <a v-bind:href="'/img/users/' + user.img_path" data-lightbox="image-1" >
+                            <a v-bind:href="'/img/users/' + user.img_path" data-fancybox="image-1" data-caption="Imágen anterior">
                                 <img :src="'/img/users/' + user.img_path" v-bind:alt="user.name" width="100%">
                             </a>
                         </div>
@@ -74,7 +74,7 @@
                             <h4>Imágen nueva</h4>
                         </div>
                         <div class="card-body">
-                            <a :href="imagen" data-lightbox="image-1" >
+                            <a :href="imagen" data-fancybox="image-1" data-caption="Imágen nueva">
                                 <img :src="imagen" alt="" width="100%">
                             </a>
                             
@@ -104,7 +104,7 @@ export default{
                     phone: null,
                     img_path: null,
                     img_path2: null,
-                    role: 'supplier',
+                    role: 'customer',
                     status: 1,
                 },
                 errors: []
@@ -112,14 +112,12 @@ export default{
         },
         created(){
             this.showData()
-        },
+        }, 
         methods:{
             getImage(e){
                 this.file = e.target.files[0];
                 this.user.img_path2 = this.file;
-                this.uploadImg(this.file);
-                console.log(this.user.img_path)
-                console.log(this.user.img_path2)
+                this.uploadImg(this.file); 
             },
             uploadImg(file){
                 let reader = new FileReader()
@@ -129,7 +127,7 @@ export default{
                 reader.readAsDataURL(file);
             },
             async showData(){
-                await this.axios.get(`/api/supplier/${this.$route.params.id}/edit`)
+                await this.axios.get(`/api/customer/${this.$route.params.id}/edit`)
                 .then(response=>{
                     this.user = response.data
                 })
@@ -147,12 +145,10 @@ export default{
                 formData.append('status', this.user.status)
                 formData.append('role', this.user.role)
                 formData.append('img_path', this.user.img_path2)
-                console.log(this.user)
                 if(this.user.password == this.user.current_password){
-                    await this.axios.post('/api/supplier/' + this.$route.params.id, formData)
+                    await this.axios.post('/api/customer/' + this.$route.params.id, formData)
                     .then(response=>{
-                        console.log(response.data)
-                        this.$router.push({name:"indexSupplier"})
+                        this.$router.push({name:"indexCustomer"})
                     })
                     .catch(error=>{
                         console.log(error)

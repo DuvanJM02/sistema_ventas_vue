@@ -47,7 +47,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Usuario</th>
-                                <th class="xd">Correo</th>
+                                <th>Correo</th>
                                 <th>Documento</th>
                                 <th>N° Documento</th>
                                 <th>Ubicación</th>
@@ -60,12 +60,12 @@
                             <tr v-for="supplier in suppliers" :key="supplier.id">
                                 <td>{{ supplier.id }}</td>
                                 <td>
-                                    <a class="inline" :href="'img/users/' + supplier.img_path" data-lightbox="image-1" >
+                                    <a class="inline" :href="'img/users/' + supplier.img_path" :data-fancybox="supplier.name" :data-caption="supplier.name">
                                         <img class="rounded-circle" :src="'img/users/' + supplier.img_path" v-bind:alt="supplier.name" width="40rem" height="40rem">    
                                     </a>
                                     <strong>{{ supplier.name }}</strong>
                                 </td>
-                                <td class="xd">{{ supplier.email }}</td>
+                                <td>{{ supplier.email }}</td>
                                 <td>{{ supplier.document }}</td>
                                 <td>{{ supplier.n_document }}</td>
                                 <td>{{ supplier.location }}</td>

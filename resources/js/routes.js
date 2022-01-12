@@ -64,11 +64,6 @@ export const ROUTES = [
         component: ()=> import('./components/shopping/income/Create.vue') 
     },
     {
-        name: 'editIncome',
-        path: '/income/edit/:id',
-        component: ()=> import('./components/shopping/income/Edit.vue')
-    },
-    {
         name: 'showIncome',
         path: '/income/:id',
         component: ()=> import('./components/shopping/income/Show.vue'),
@@ -87,5 +82,20 @@ export const ROUTES = [
         name: 'editCustomer',
         path: '/customer/edit/:id',
         component: ()=> import('./components/sales/customer/Edit.vue')
+    },
+    {
+        name: 'indexSale',
+        path: '/sale',
+        component: ()=> import('./components/sales/sale/Index.vue'),
+    },
+    { 
+        name: 'createSale',
+        path: '/sale/create',
+        component: ()=> import('./components/sales/sale/Create.vue') 
+    },
+    {
+        name: 'showSale',
+        path: '/sale/:id',
+        component: ()=> import('./components/sales/sale/Show.vue'),
     },
 ];

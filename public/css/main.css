@@ -7,7 +7,7 @@ a {
 }
 
 .navbar {
-    position: relative;
+    position: sticky;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -28,11 +28,15 @@ a {
 }
 
 .dropdown-menu {
-    background-color: #ffc107;
+    background-color: #0d6efd;
 }
 
 .dropdown-item.active, .dropdown-item:active {
-    background-color: #212529;
+    background-color: #2a4e72;
+}
+
+.dropdown-item {
+    color: #fff;
 }
 
 .end {

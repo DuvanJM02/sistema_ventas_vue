@@ -58,22 +58,34 @@
                             <tr v-for="income in incomes" :key="income.id">
                                 <td>{{ income.date }}</td>
                                 <td>{{ income.name }}</td>
-                                <td>{{ income.t_comprobante + ': ' + income.s_comprobante + '-' + income.n_comprobante }}</td>
-                                <td>{{ income.tax }}</td>
-                                <td>{{ income.total }}</td>
-                                <td>{{ income.status }}</td>
-                                <td class="text-center">
-                                    <router-link :to='{name:"showIncome", params:{id:income.id}}' class="btn btn-warning">
-                                        <i class="fas fa-edit"></i>
+                                <td>
+                                    <router-link :to='{name:"showIncome", params:{id:income.id}}'>
+                                        {{ income.t_comprobante + ': ' + income.s_comprobante + '-' + income.n_comprobante }}
                                     </router-link>
-                                    <div class="d-inline" v-if="income.status">
-                                        <a class="btn btn-danger" type="button" @click="deleteIncome(income.id)" >
-                                            <i class="fas fa-eye-slash"></i>
+                                </td>
+                                <td>{{ income.tax }}%</td>
+                                <td>${{ income.total }}</td>
+                                <td>
+                                    <span v-if="income.status == 1">Activo</span>
+                                    <span v-else>Inactivo</span>
+                                </td>
+                                <td class="text-center">
+                                    <router-link :to='{name:"showIncome", params:{id:income.id}}' class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-scroll"></i>
+                                    </router-link>
+                                    <div class="d-inline">
+                                        <a :href="income_print + '/' + income.id" class="btn btn-sm btn-outline-dark" target="_blank">
+                                            <i class="fas fa-print"></i>
                                         </a>
                                     </div>
-                                    <div class="d-inline" v-if="!income.status">
-                                        <a class="btn btn-success" type="button" @click="activateIncome(income.id)" >
-                                            <i class="fas fa-eye"></i>
+                                    <div class="d-inline" v-if="income.status == 1">
+                                        <a class="btn btn-sm btn-outline-success" type="button" @click="deleteIncome(income.id)" >
+                                            <i class="fas fa-toggle-on"></i>
+                                        </a>
+                                    </div>
+                                    <div class="d-inline" v-else>
+                                        <a class="btn btn-sm btn-outline-danger" type="button" @click="activateIncome(income.id)" >
+                                            <i class="fas fa-toggle-off"></i>
                                         </a>
                                     </div>
                                 </td>
@@ -99,6 +111,7 @@ export default{
     },
     created(){
         this.showIncomes()
+        this.getIncomeStore()
     },
     methods:{
         showIncomes(){
@@ -118,6 +131,9 @@ export default{
         searchItem(){
             clearTimeout(this.setTimeoutSearch)
             this.setTimeoutSearch = setTimeout(this.showIncomes, 360)
+        },
+        getIncomeStore(){
+            this.income_print = document.getElementsByTagName('meta').incomeprint.content;
         },
         deleteIncome(id){
             if(confirm('¿Desea borrar el registro?')){

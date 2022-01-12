@@ -16,7 +16,7 @@ class CreateSaleDetailsTable extends Migration
         Schema::create('sale_details', function (Blueprint $table) {
             $table->id();
             $table->integer('quantity');
-            $table->double('purchase_price');
+            $table->double('sale_price');
             $table->double('discount');
             //clave foranea
             $table->foreignId('sale_id')->nullable();

@@ -20,6 +20,7 @@ class CreateIncomeTable extends Migration
             $table->integer('n_comprobante');
             $table->date('date');
             $table->string('tax');
+            $table->string('total');
             $table->string('status');
 
             //clave foranea
